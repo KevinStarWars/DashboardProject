@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.ui.typography', [])
+  angular.module('Geothermal.pages.ui.typography', [])
       .config(routeConfig);
 
   /** @ngInject */

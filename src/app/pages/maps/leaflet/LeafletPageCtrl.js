@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.maps')
+  angular.module('Geothermal.pages.maps')
       .controller('LeafletPageCtrl', LeafletPageCtrl);
 
   /** @ngInject */

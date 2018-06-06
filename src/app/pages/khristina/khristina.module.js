@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.khristina', [])
+    angular.module('Geothermal.pages.khristina', [])
         .config(routeConfig);
 
     /** @ngInject */

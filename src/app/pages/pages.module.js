@@ -1,24 +1,20 @@
-/**
- * @author v.lugovsky
- * created on 16.12.2015
- */
 (function () {
   "use strict";
 
-  angular.module("BlurAdmin.pages", [
+  angular.module("Geothermal.pages", [
     "ui.router",
 
-    "BlurAdmin.pages.dashboard",
-    "BlurAdmin.pages.ui",
-    "BlurAdmin.pages.components",
-    "BlurAdmin.pages.form",
-    "BlurAdmin.pages.tables",
-    "BlurAdmin.pages.charts",
-    "BlurAdmin.pages.maps",
-    "BlurAdmin.pages.profile",
-      "BlurAdmin.pages.khristina",
-      "BlurAdmin.pages.marvin",
-      "BlurAdmin.pages.kevin"
+    "Geothermal.pages.dashboard",
+    "Geothermal.pages.ui",
+    "Geothermal.pages.components",
+    "Geothermal.pages.form",
+    "Geothermal.pages.tables",
+    "Geothermal.pages.charts",
+    "Geothermal.pages.maps",
+    "Geothermal.pages.profile",
+      "Geothermal.pages.khristina",
+      "Geothermal.pages.marvin",
+      "Geothermal.pages.kevin"
   ])
       .config(routeConfig);
 

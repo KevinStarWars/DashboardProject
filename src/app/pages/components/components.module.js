@@ -5,10 +5,10 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.components', [
-    'BlurAdmin.pages.components.mail',
-    'BlurAdmin.pages.components.timeline',
-    'BlurAdmin.pages.components.tree',
+  angular.module('Geothermal.pages.components', [
+    'Geothermal.pages.components.mail',
+    'Geothermal.pages.components.timeline',
+    'Geothermal.pages.components.tree',
   ])
       .config(routeConfig);
 

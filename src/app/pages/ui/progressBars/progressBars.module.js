@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.ui.progressBars', [])
+  angular.module('Geothermal.pages.ui.progressBars', [])
       .config(routeConfig);
 
   /** @ngInject */

@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.charts.chartist', [])
+  angular.module('Geothermal.pages.charts.chartist', [])
     .config(routeConfig);
 
   /** @ngInject */

@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  angular.module('BlurAdmin.theme.components')
+  angular.module('Geothermal.theme.components')
     .directive('baWizardStep', baWizardStep);
 
   /** @ngInject */

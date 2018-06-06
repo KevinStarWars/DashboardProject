@@ -30,7 +30,7 @@
     white: '#10c4b5',
   };
 
-  angular.module('BlurAdmin.theme')
+  angular.module('Geothermal.theme')
     .provider('baConfig', configProvider);
 
   /** @ngInject */

@@ -3,18 +3,18 @@
  * created on 16.12.2015
  */
 (function () {
-  'use strict';
+  "use strict";
 
-  angular.module('BlurAdmin.pages.charts.amCharts', [])
+  angular.module("Geothermal.pages.charts.amCharts", [])
       .config(routeConfig).config(amChartConfig);
 
   /** @ngInject */
   function routeConfig($stateProvider) {
     $stateProvider
-        .state('charts.amCharts', {
-          url: '/amCharts',
-          templateUrl: 'app/pages/charts/amCharts/charts.html',
-          title: 'amCharts',
+        .state("charts.amCharts", {
+          url: "/amCharts",
+          templateUrl: "app/pages/charts/amCharts/charts.html",
+          title: "amCharts",
           sidebarMeta: {
             order: 0,
           },
@@ -47,7 +47,7 @@
       },
 
       AmRectangularChart: {
-        zoomOutButtonColor: '#FFFFFF',
+        zoomOutButtonColor: "#FFFFFF",
         zoomOutButtonRollOverAlpha: 0.15,
         zoomOutButtonImage: "lens.png"
       },
@@ -99,7 +99,7 @@
         tickLength: 15,
         minorTickLength: 8,
         axisThickness: 3,
-        axisColor: '#FFFFFF',
+        axisColor: "#FFFFFF",
         axisAlpha: 1,
         bandAlpha: 0.8
       },
@@ -164,7 +164,7 @@
       },
 
       // the defaults below are set using CSS syntax, you can use any existing css property
-      // if you don't use Stock chart, you can delete lines below
+      // if you don"t use Stock chart, you can delete lines below
       PeriodSelector: {
         color: "#FFFFFF"
       },

@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.ui.slider', [])
+  angular.module('Geothermal.pages.ui.slider', [])
     .config(routeConfig);
 
   /** @ngInject */

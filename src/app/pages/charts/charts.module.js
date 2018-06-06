@@ -1,15 +1,11 @@
-/**
- * @author v.lugovsky
- * created on 16.12.2015
- */
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.charts', [
-      'BlurAdmin.pages.charts.amCharts',
-      'BlurAdmin.pages.charts.chartJs',
-      'BlurAdmin.pages.charts.chartist',
-      'BlurAdmin.pages.charts.morris'
+  angular.module('Geothermal.pages.charts', [
+      'Geothermal.pages.charts.amCharts',
+      'Geothermal.pages.charts.chartJs',
+      'Geothermal.pages.charts.chartist',
+      'Geothermal.pages.charts.morris'
   ])
       .config(routeConfig);
 

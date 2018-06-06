@@ -1,11 +1,7 @@
-/**
- * @author a.demeshko
- * created on 12/18/15
- */
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.charts.morris', [])
+  angular.module('Geothermal.pages.charts.morris', [])
     .config(routeConfig).config(function(baConfigProvider){
       var layoutColors = baConfigProvider.colors;
       Morris.Donut.prototype.defaults.backgroundColor = 'transparent';

@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.components.timeline', [])
+  angular.module('Geothermal.pages.components.timeline', [])
     .config(routeConfig);
 
   /** @ngInject */

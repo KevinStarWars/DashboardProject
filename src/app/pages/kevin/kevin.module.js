@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.kevin', [])
+    angular.module('Geothermal.pages.kevin', [])
         .config(routeConfig);
 
     /** @ngInject */

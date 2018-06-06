@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.profile')
+  angular.module('Geothermal.pages.profile')
     .controller('ProfilePageCtrl', ProfilePageCtrl);
 
   /** @ngInject */

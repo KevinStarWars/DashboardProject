@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.dashboard')
+  angular.module('Geothermal.pages.dashboard')
       .directive('trafficChart', trafficChart);
 
   /** @ngInject */

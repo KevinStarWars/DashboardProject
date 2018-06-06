@@ -1,11 +1,7 @@
-/**
- * @author a.demeshko
- * created on 12/16/15
- */
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.charts.morris')
+  angular.module('Geothermal.pages.charts.morris')
     .controller('morrisCtrl', morrisCtrl);
 
   /** @ngInject */

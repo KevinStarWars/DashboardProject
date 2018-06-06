@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.ui.notifications')
+  angular.module('Geothermal.pages.ui.notifications')
       .controller('NotificationsPageCtrl', NotificationsPageCtrl);
 
   /** @ngInject */

@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.ui.buttons')
+  angular.module('Geothermal.pages.ui.buttons')
       .controller('ButtonPageCtrl', ButtonPageCtrl);
 
   /** @ngInject */

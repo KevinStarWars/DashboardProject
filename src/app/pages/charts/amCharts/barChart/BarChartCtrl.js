@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.charts.amCharts')
+  angular.module('Geothermal.pages.charts.amCharts')
       .controller('BarChartCtrl', BarChartCtrl);
 
   /** @ngInject */
