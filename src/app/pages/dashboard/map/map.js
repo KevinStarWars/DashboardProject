@@ -16,11 +16,15 @@
                         let geoData = await fetchDataFactory.fetchGeoData();
                         geoData.forEach(function (value) {
                             let longLat = {lat: parseFloat(value['latitude']), lng: parseFloat(value['longitude'])};
-                            new google.maps.Marker({
+                            let marker = new google.maps.Marker({
                                 position: longLat,
                                 map: map
                                 }
-                            )
+                            );
+                            marker.addListener('click', function () {
+                                let locationString = 'http://localhost:3000/#/' + value['name'];
+                                window.open(locationString, '_self');
+                            })
                         })
                     }
 
