@@ -14,6 +14,5 @@ angular.module('Geothermal', [
   'angular-progress-button-styles',
 
   'Geothermal.theme',
-  'Geothermal.pages',
-    'Geothermal.pages.kevin'
+  'Geothermal.pages'
 ]);
