@@ -155,14 +155,6 @@
                     return dataArray;
                 },
 
-                fetchTwoDataSets: async function(filenameOne, filenameTwo){
-                    let dataArray = [];
-                    let dataOne = await this.fetchData(this.toJsonPath(filenameOne));
-                    let dataTwo = await this.fetchData(this.toJsonPath(filenameTwo));
-                    dataArray.push(dataOne, dataTwo);
-                    return dataArray;
-                },
-
                 toJsonPath: function(filename){
                     return filename + ".json";
                 }
