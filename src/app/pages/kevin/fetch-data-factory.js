@@ -157,6 +157,18 @@
 
                 toJsonPath: function(filename){
                     return filename + ".json";
+                },
+
+                fetchNameDepthArray: async function () {
+                    let nameDepthArray = [];
+                    let nameArray = await this.getAllNames();
+                    for (let i = 0; i < nameArray.length; i++){
+                        let tmpArray = [];
+                        tmpArray.push(nameArray[i]);
+                        tmpArray.push(await this.fetchDepth(nameArray[i]));
+                        nameDepthArray.push(tmpArray);
+                    }
+                    return nameDepthArray;
                 }
             }
         });

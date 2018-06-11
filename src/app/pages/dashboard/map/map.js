@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('Geothermal.pages.maps')
+    angular.module('Geothermal.pages.dashboard')
         .controller('MapCtrl',
             ['$timeout', 'fetchDataFactory',
                 function MapCtrl($timeout, fetchDataFactory) {
