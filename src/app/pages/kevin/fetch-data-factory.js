@@ -33,6 +33,11 @@
                 fetchDownSampledData: async function(filename, n){
                     return await fetch('../../../assets/geothermal-data/' + filename)
                         .then(response => response.json());
+                },
+
+                fetchGeoData: async function(){
+                    return await fetch('../../../assets/geothermal-data/general-data/geo-data.json')
+                        .then(response => response.json());
                 }
             }
         });
