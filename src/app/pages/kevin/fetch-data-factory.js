@@ -13,7 +13,7 @@
                 fetchTimeStepArray: async function(filename){
                     let data = await fetch('../../../assets/geothermal-data/' + filename)
                         .then(response => response.json());
-                    var timeStepArray = [];
+                    let timeStepArray = [];
                     data.forEach(function (value) {
                         timeStepArray.push(value['time_step']);
                     });
@@ -23,11 +23,16 @@
                 fetchEfficiencyArray: async function(filename){
                     let data = await fetch('../../../assets/geothermal-data/' + filename)
                         .then(response => response.json());
-                    var efficiencyArray = [];
+                    let efficiencyArray = [];
                     data.forEach(function (value) {
                         efficiencyArray.push(parseFloat(value['efficiency']) * 100);
                     });
                     return efficiencyArray;
+                },
+
+                fetchDownSampledData: async function(filename, n){
+                    return await fetch('../../../assets/geothermal-data/' + filename)
+                        .then(response => response.json());
                 }
             }
         });
