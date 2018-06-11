@@ -5,7 +5,7 @@
         .controller('KhristinaCtrl',
             ['$scope', 'fetchDataFactory',
         async function KhristinaCtrl($scope, fetchDataFactory) {
-            let data = await fetchDataFactory.fetchData('1d8a69a5-b692-47b7-aacb-b7f26692c0ec.json');
+            let data = await fetchDataFactory.fetchData('1d8a69a5-b692-47b7-aacb-b7f26692c0ec');
             console.log(data);
             $scope.simpleLineOptions = {
                 color: baConfig.colors.defaultText,

@@ -6,13 +6,12 @@
 
             return {
                 fetchData: async function(filename) {
-                    return await fetch('../../../assets/geothermal-data/' + filename)
+                    return await fetch('../../../assets/geothermal-data/' + this.toJsonPath(filename))
                         .then(response => response.json());
                 },
 
                 fetchTimeStepArray: async function(filename){
-                    let data = await fetch('../../../assets/geothermal-data/' + filename)
-                        .then(response => response.json());
+                    let data = await this.fetchData(filename);
                     let timeStepArray = [];
                     data.forEach(function (value) {
                         timeStepArray.push(value['time_step']);
@@ -21,8 +20,7 @@
                 },
 
                 fetchEfficiencyArray: async function(filename){
-                    let data = await fetch('../../../assets/geothermal-data/' + filename)
-                        .then(response => response.json());
+                    let data = await this.fetchData(filename);
                     let efficiencyArray = [];
                     data.forEach(function (value) {
                         efficiencyArray.push(parseFloat(value['efficiency']));
@@ -31,8 +29,7 @@
                 },
 
                 fetchEfficiencyArrayInPercent: async function(filename){
-                    let data = await fetch('../../../assets/geothermal-data/' + filename)
-                        .then(response => response.json());
+                    let data = await this.fetchData(filename);
                     let efficiencyArray = [];
                     data.forEach(function (value) {
                         efficiencyArray.push(parseFloat(value['efficiency']) * 100);
@@ -68,8 +65,7 @@
                 },
 
                 fetchExtractionRatesArray: async function(filename){
-                    let data = await fetch('../../../assets/geothermal-data/' + filename)
-                        .then(response => response.json());
+                    let data = await this.fetchData(filename);
                     let extractionRates = [];
                     data.forEach(function (value) {
                         extractionRates.push(parseFloat(value['extraction_rate']));
@@ -86,9 +82,89 @@
                     return downSampledArray;
                 },
 
+                fetchElectricalPowerArray: async function(filename){
+                    let data = await this.fetchData(filename);
+                    let electricalPowerArray = [];
+                    data.forEach(function (value) {
+                        electricalPowerArray.push(parseFloat(value['electrical_power']));
+                    });
+                    return electricalPowerArray;
+                },
+
+                fetchDownSampledElectricalPowerArray: async function(filename, n){
+                    let data = await this.fetchElectricalPowerArray(filename);
+                    let downSampledArray = [];
+                    for (let i = 0; i < data.length; i = i + n){
+                        downSampledArray.push(data[i]);
+                    }
+                    return downSampledArray;
+                },
+
+                fetchDepth: async function(filename){
+                    let data = await this.fetchData(filename);
+                    return data[0]['depth'];
+                },
+
+                fetchTemperature: async function(filename){
+                    let data = await this.fetchData(filename);
+                    return data[0]['temperature'];
+                },
+
+                fetchGeothermalPowerArray: async function(filename){
+                    let data = await this.fetchData(filename);
+                    let geothermalPowerArray = [];
+                    data.forEach(function (value) {
+                        geothermalPowerArray.push(parseFloat(value['geothermal_power']));
+                    });
+                    return geothermalPowerArray;
+                },
+
+                fetchDownSampledGeothermalPowerArray: async function(filename, n){
+                    let data = await this.fetchGeothermalPowerArray(filename);
+                    let downSampledArray = [];
+                    for (let i = 0; i < data.length; i = i + n){
+                        downSampledArray.push(data[i]);
+                    }
+                    return downSampledArray;
+                },
+
                 fetchGeoData: async function(){
                     return await fetch('../../../assets/geothermal-data/general-data/geo-data.json')
                         .then(response => response.json());
+                },
+
+                getAllNames: async function(){
+                    let geoData = await this.fetchGeoData();
+                    let nameArray = [];
+                    geoData.forEach(function (value) {
+                        nameArray.push(value['name']);
+                    });
+                    return nameArray;
+                },
+
+                fetchAllData: async function(){
+                    let names = await this.getAllNames();
+                    console.log(names);
+                    let dataArray = [];
+                    names.forEach(async function (value) {
+                        let filePath = value + ".json";
+                        let data = await fetch('../../../assets/geothermal-data/' + filePath)
+                            .then(response => response.json());
+                        dataArray.push(data);
+                    });
+                    return dataArray;
+                },
+
+                fetchTwoDataSets: async function(filenameOne, filenameTwo){
+                    let dataArray = [];
+                    let dataOne = await this.fetchData(this.toJsonPath(filenameOne));
+                    let dataTwo = await this.fetchData(this.toJsonPath(filenameTwo));
+                    dataArray.push(dataOne, dataTwo);
+                    return dataArray;
+                },
+
+                toJsonPath: function(filename){
+                    return filename + ".json";
                 }
             }
         });

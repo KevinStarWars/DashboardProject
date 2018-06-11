@@ -6,10 +6,10 @@
             ['fetchDataFactory', '$scope', '$timeout', 'baConfig',
                 async function KevinCtrl(fetchDataFactory, $scope, $timeout, baConfig) {
 
-            let downSampledData = await fetchDataFactory.fetchDownSampledData('1d8a69a5-b692-47b7-aacb-b7f26692c0ec.json', 10);
+            let downSampledData = await fetchDataFactory.fetchTwoDataSets('1d8a69a5-b692-47b7-aacb-b7f26692c0ec','1d8a69a5-b692-47b7-aacb-b7f26692c0ec');
             console.log(downSampledData);
 
-            let efficiency = await fetchDataFactory.fetchEfficiencyArray('1d8a69a5-b692-47b7-aacb-b7f26692c0ec.json');
+            let efficiency = await fetchDataFactory.fetchEfficiencyArray('1d8a69a5-b692-47b7-aacb-b7f26692c0ec');
 
             $scope.simpleLineOptions = {
                 color: baConfig.colors.defaultText,
