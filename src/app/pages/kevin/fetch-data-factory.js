@@ -144,7 +144,6 @@
 
                 fetchAllData: async function(){
                     let names = await this.getAllNames();
-                    console.log(names);
                     let dataArray = [];
                     names.forEach(async function (value) {
                         let filePath = value + ".json";

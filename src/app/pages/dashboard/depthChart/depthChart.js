@@ -8,14 +8,12 @@
             $scope.checkboxModel = true;
             document.getElementById('depthChartPanel').style.display = 'none';
             let nameDepthArray = await fetchDataFactory.fetchNameDepthArray();
-            console.log(nameDepthArray);
             let nameArray = [];
             nameDepthArray.forEach(function (item) {
                 nameArray.push(item[0]);
             });
             $scope.names = nameArray;
             let layoutColors = baConfig.colors;
-            console.log(layoutColors);
             let colorArray = [
                 layoutColors.dashboard.blueStone,
                 layoutColors.dashboard.gossip,
