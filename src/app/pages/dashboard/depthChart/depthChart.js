@@ -3,9 +3,17 @@
 
     angular.module('Geothermal.pages.dashboard')
         .controller('DepthChartCtrl',
-            ['baConfig', 'fetchDataFactory', 'layoutPaths',
-                async function DepthChartCtrl(baConfig, fetchDataFactory, layoutPaths) {
+            ['$scope', 'baConfig', 'fetchDataFactory', 'layoutPaths',
+                async function DepthChartCtrl($scope, baConfig, fetchDataFactory, layoutPaths) {
+            $scope.checkboxModel = true;
+            document.getElementById('depthChartPanel').style.display = 'none';
             let nameDepthArray = await fetchDataFactory.fetchNameDepthArray();
+            console.log(nameDepthArray);
+            let nameArray = [];
+            nameDepthArray.forEach(function (item) {
+                nameArray.push(item[0]);
+            });
+            $scope.names = nameArray;
             let layoutColors = baConfig.colors;
             console.log(layoutColors);
             let colorArray = [
@@ -23,12 +31,17 @@
                     color: colorArray[Math.floor(Math.random()*colorArray.length)]
                 })
             });
-            console.log(dataProvider);
             let barChart = AmCharts.makeChart('depthChart', {
                 type: 'serial',
                 theme: 'blur',
                 color: layoutColors.defaultText,
                 dataProvider: dataProvider,
+                listeners: [
+                    {
+                        event: 'rendered',
+                        method: makeVisible()
+                    }
+                ],
                 valueAxes: [
                     {
                         axisAlpha: 0,
@@ -67,12 +80,43 @@
                 creditsPosition: 'top-right',
                 pathToImages: layoutPaths.images.amChart
             });
+
             barChart.addListener("clickGraphItem", handleClick);
+
+            function makeVisible() {
+                document.getElementById('depthChartPanel').style.display = 'inline';
+            }
 
             function handleClick(event){
                 let locationString = 'http://localhost:3000/#/' + event['item']['category'];
-                console.log(locationString);
                 window.open(locationString, "_top");
+            }
+
+            $scope.removeData = function(element){
+                if (element.checkboxModel === false) {
+                    let index = dataProvider.findIndex(function (value) {
+                        if (value.geothermal === element.name) {
+                            return true;
+                        }
+                    });
+                    if (index !== -1) {
+                        dataProvider.splice(index, 1);
+                        barChart.validateData();
+                    }
+                } else {
+                    if (!dataProvider.includes(element.name)) {
+                        nameDepthArray.forEach(function (item) {
+                            if (item[0] === element.name){
+                                dataProvider.push({
+                                    geothermal: item[0],
+                                    depth: parseFloat(item[1]),
+                                    color: colorArray[Math.floor(Math.random()*colorArray.length)]
+                                });
+                                barChart.validateData();
+                            }
+                        })
+                    }
+                }
             }
         }
         ]

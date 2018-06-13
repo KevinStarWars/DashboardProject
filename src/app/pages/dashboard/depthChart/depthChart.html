@@ -1,1 +1,12 @@
-<div id="depthChart" class="admin-chart" ng-controller="DepthChartCtrl"></div>
+<div id="controller" ng-app="Geothermal" ng-controller="DepthChartCtrl">
+    <div id="depthChart" class="admin-chart">
+    </div>
+    <div class="control-group">
+        <div class="control" ng-repeat="name in names" ng-model="names">
+            <label class="checkbox-inline custom-checkbox nowrap">
+                <input ng-model="checkboxModel" type="checkbox" checked ng-change="removeData(this)">
+                <span ng-model="names">{{name}}</span>
+            </label>
+        </div>
+    </div>
+</div>
