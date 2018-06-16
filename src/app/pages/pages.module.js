@@ -14,7 +14,8 @@
     "Geothermal.pages.profile",
       "Geothermal.pages.khristina",
       "Geothermal.pages.marvin",
-      "Geothermal.pages.kevin"
+      "Geothermal.pages.kevin",
+      "Geothermal.pages.1d8a69a5-b692-47b7-aacb-b7f26692c0ec"
   ])
       .config(routeConfig);
 

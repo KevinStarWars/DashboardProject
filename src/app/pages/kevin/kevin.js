@@ -5,14 +5,8 @@
         .controller('KevinCtrl',
             ['fetchDataFactory', '$scope', '$timeout', 'baConfig',
                 async function KevinCtrl(fetchDataFactory, $scope, $timeout, baConfig) {
-            let data = await fetchDataFactory.fetchDownSampledData('1d8a69a5-b692-47b7-aacb-b7f26692c0ec.json', 10);
-            console.log(data);
 
-            let timeSteps = await fetchDataFactory.fetchTimeStepArray('1d8a69a5-b692-47b7-aacb-b7f26692c0ec.json');
-            console.log(timeSteps);
-
-            let efficiency = await fetchDataFactory.fetchEfficiencyArray('1d8a69a5-b692-47b7-aacb-b7f26692c0ec.json');
-            console.log(efficiency);
+            let efficiency = await fetchDataFactory.fetchEfficiencyArray('1d8a69a5-b692-47b7-aacb-b7f26692c0ec');
 
             $scope.simpleLineOptions = {
                 color: baConfig.colors.defaultText,
@@ -35,7 +29,7 @@
             };
 
             $scope.areaLineData = {
-                labels: timeSteps,
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 series: [
                     efficiency
                 ]
