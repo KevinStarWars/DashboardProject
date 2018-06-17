@@ -1,4 +1,4 @@
-const Property = {
+let Property = {
     DEPTH:              "depth",
     EFFICIENCY:         "efficiency",
     ELECTRICAL_POWER:   "electrical_power",
@@ -78,7 +78,7 @@ const Property = {
                 },
 
 
-                // Fetch the electrical power pf each entry of a power plant.
+                // Fetch the electrical power of each entry of a power plant.
                 fetchElectricalPowerArray: async function(filename) {
                     let data = await this.fetchData(filename);
                     return this.getProperty(data, Property.ELECTRICAL_POWER);
@@ -183,6 +183,33 @@ const Property = {
                     data.forEach(function (value) {
                         array.push(value[property]);
                     });
+                    return array;
+                },
+
+                // Filter a set of data, so that only two properties are kept.
+                // This method returns a two-dimensional array. The inner arrays
+                // are pairs of the first and second property (the parameters).
+                getProperties: async function (file, p1, p2, n) {
+                    let data = await this.fetchData(file);
+                    let array = [];
+
+                    data.forEach(function (value) {
+                        let temp = [];
+
+                        if (p1 = Property.TIME_STEP) {
+                            // Format the timestamp into a string
+                            temp[p1] = new Date(value[p1] * 10000000).toDateString();
+                        } else {
+                            temp[p1] = value[p1];
+                        }
+                        temp[p2] = value[p2];
+                        array.push(temp);
+                    });
+
+                    if (n !== 'undefined') {
+                        array = this.downsample(array, n);
+                    }
+
                     return array;
                 }
             }

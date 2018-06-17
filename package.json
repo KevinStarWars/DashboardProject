@@ -42,7 +42,7 @@
     "main-bower-files": "~2.13.1",
     "uglify-save-license": "~0.4.1",
     "wiredep": "~4.0.0",
-    "wrench": "~1.5.8"
+    "wrench": "^1.5.9"
   },
   "scripts": {
     "postinstall": "bower install"

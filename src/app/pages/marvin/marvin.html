@@ -1,10 +1,15 @@
-<div id="areaChart" ng-controller="MarvinCtrl">
-    <div class="row">
-        <div class="col-md-6 ">
-            <div ba-panel ba-panel-title="Lines" ba-panel-class="with-scroll ">
-                <h5>Simple line chart</h5>
-                <div id="line-chart" class="ct-chart"></div>
-            </div>
-        </div>
-    </div>
-</div>
+<style>
+    #bardiv {
+        width		: 100%;
+        height		: 500px;
+        font-size	: 11px;
+    }
+
+    #linediv {
+        width	: 100%;
+        height	: 500px;
+    }
+</style>
+
+<div id="bardiv" ng-controller="MarvinCtrl"></div>
+<div id="linediv" ng-controller="MarvinCtrl"></div>
