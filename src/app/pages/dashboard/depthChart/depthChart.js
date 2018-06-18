@@ -3,8 +3,8 @@
 
     angular.module('Geothermal.pages.dashboard')
         .controller('DepthChartCtrl',
-            ['$scope', 'baConfig', 'fetchDataFactory', 'layoutPaths',
-                async function DepthChartCtrl($scope, baConfig, fetchDataFactory, layoutPaths) {
+            ['$scope', 'baConfig', 'fetchDataFactory', 'layoutPaths', 'dashboardFactory',
+                async function DepthChartCtrl($scope, baConfig, fetchDataFactory, layoutPaths, dashboardFactory) {
             $scope.checkboxModel = true;
             document.getElementById('depthChartPanel').style.display = 'none';
             let nameDepthArray = await fetchDataFactory.fetchNameDepthArray();
@@ -91,6 +91,7 @@
             }
 
             $scope.removeData = function(element){
+                console.log(element);
                 if (element.checkboxModel === false) {
                     let index = dataProvider.findIndex(function (value) {
                         if (value.geothermal === element.name) {

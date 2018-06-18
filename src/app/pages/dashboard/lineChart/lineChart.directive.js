@@ -8,7 +8,7 @@
     function lineChart() {
         return {
             restrict: 'E',
-            controller: 'LineChartCtrl',
+            controller: 'DshbrdLineChartCtrl',
             templateUrl: 'app/pages/dashboard/lineChart/lineChart.html'
         };
     }

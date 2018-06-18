@@ -1,12 +1,11 @@
 (function () {
-    'use strict';
+    "use strict";
 
-    angular.module('Geothermal.pages.kevin')
-        .factory('fetchDataFactory',function() {
-
+    angular.module("Geothermal.pages.kevin")
+        .factory("fetchDataFactory",function() {
             return {
                 fetchData: async function(filename) {
-                    return await fetch('../../../assets/geothermal-data/' + this.toJsonPath(filename))
+                    return await fetch("../../../assets/geothermal-data/" + this.toJsonPath(filename))
                         .then(response => response.json());
                 },
 
@@ -14,16 +13,25 @@
                     let data = await this.fetchData(filename);
                     let timeStepArray = [];
                     data.forEach(function (value) {
-                        timeStepArray.push(value['time_step']);
+                        timeStepArray.push(value["time_step"]);
                     });
                     return timeStepArray;
+                },
+
+                fetchDownSampledTimeSteps:async function(filename, n){
+                    let data = await this.fetchTimeStepArray(filename);
+                    let downSampledArray = [];
+                    for (let i = 0; i < data.length; i = i + n){
+                        downSampledArray.push(data[i]);
+                    }
+                    return downSampledArray;
                 },
 
                 fetchEfficiencyArray: async function(filename){
                     let data = await this.fetchData(filename);
                     let efficiencyArray = [];
                     data.forEach(function (value) {
-                        efficiencyArray.push(parseFloat(value['efficiency']));
+                        efficiencyArray.push(parseFloat(value["efficiency"]));
                     });
                     return efficiencyArray;
                 },
@@ -32,7 +40,7 @@
                     let data = await this.fetchData(filename);
                     let efficiencyArray = [];
                     data.forEach(function (value) {
-                        efficiencyArray.push(parseFloat(value['efficiency']) * 100);
+                        efficiencyArray.push(parseFloat(value["efficiency"]) * 100);
                     });
                     return efficiencyArray;
                 },
@@ -50,7 +58,7 @@
                     let timeSteps = await this.fetchTimeStepArray(filename);
                     let downSampledArray = [];
                     for (let i = 0; i < timeSteps.length; i = i + n){
-                        downSampledArray.push(data[i]);
+                        downSampledArray.push(timeSteps[i]);
                     }
                     return downSampledArray;
                 },
@@ -59,7 +67,7 @@
                     let efficiencies = await this.fetchEfficiencyArray(filename);
                     let downSampledArray = [];
                     for (let i = 0; i < efficiencies.length; i = i + n){
-                        downSampledArray.push(data[i]);
+                        downSampledArray.push(efficiencies[i]);
                     }
                     return downSampledArray;
                 },
@@ -68,7 +76,7 @@
                     let data = await this.fetchData(filename);
                     let extractionRates = [];
                     data.forEach(function (value) {
-                        extractionRates.push(parseFloat(value['extraction_rate']));
+                        extractionRates.push(parseFloat(value["extraction_rate"]));
                     });
                     return extractionRates;
                 },
@@ -86,7 +94,7 @@
                     let data = await this.fetchData(filename);
                     let electricalPowerArray = [];
                     data.forEach(function (value) {
-                        electricalPowerArray.push(parseFloat(value['electrical_power']));
+                        electricalPowerArray.push(parseFloat(value["electrical_power"]));
                     });
                     return electricalPowerArray;
                 },
@@ -102,19 +110,19 @@
 
                 fetchDepth: async function(filename){
                     let data = await this.fetchData(filename);
-                    return data[0]['depth'];
+                    return data[0]["depth"];
                 },
 
                 fetchTemperature: async function(filename){
                     let data = await this.fetchData(filename);
-                    return data[0]['temperature'];
+                    return data[0]["temperature"];
                 },
 
                 fetchGeothermalPowerArray: async function(filename){
                     let data = await this.fetchData(filename);
                     let geothermalPowerArray = [];
                     data.forEach(function (value) {
-                        geothermalPowerArray.push(parseFloat(value['geothermal_power']));
+                        geothermalPowerArray.push(parseFloat(value["geothermal_power"]));
                     });
                     return geothermalPowerArray;
                 },
@@ -129,7 +137,7 @@
                 },
 
                 fetchGeoData: async function(){
-                    return await fetch('../../../assets/geothermal-data/general-data/geo-data.json')
+                    return await fetch("../../../assets/geothermal-data/general-data/geo-data.json")
                         .then(response => response.json());
                 },
 
@@ -137,7 +145,7 @@
                     let geoData = await this.fetchGeoData();
                     let nameArray = [];
                     geoData.forEach(function (value) {
-                        nameArray.push(value['name']);
+                        nameArray.push(value["name"]);
                     });
                     return nameArray;
                 },
@@ -147,7 +155,7 @@
                     let dataArray = [];
                     names.forEach(async function (value) {
                         let filePath = value + ".json";
-                        let data = await fetch('../../../assets/geothermal-data/' + filePath)
+                        let data = await fetch("../../../assets/geothermal-data/" + filePath)
                             .then(response => response.json());
                         dataArray.push(data);
                     });
@@ -168,6 +176,26 @@
                         nameDepthArray.push(tmpArray);
                     }
                     return nameDepthArray;
+                },
+
+                fetchDownSampledEfficiencyTimes: async function(names, downSampleRate){
+                    let efficiencies = [];
+                    for (let item of names) {
+                        let time = await this.fetchDownSampledTimeArray(item, downSampleRate);
+                        let value = await this.fetchDownSampledEfficiencyArray(item, downSampleRate);
+                        if (time.length === value.length) {
+                            let tmpArray = [];
+                            for (let i = 0; i < time.length; i++) {
+                                tmpArray.push({
+                                    name: item,
+                                    time: time[i],
+                                    value: value[i]
+                                })
+                            }
+                            efficiencies.push(tmpArray);
+                        }
+                    }
+                    return efficiencies;
                 }
             }
         });
