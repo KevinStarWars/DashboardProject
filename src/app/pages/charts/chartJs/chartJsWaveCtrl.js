@@ -10,7 +10,9 @@
 
   /** @ngInject */
   function chartJsWaveCtrl($scope, $interval, stopableInterval) {
-    $scope.labels =["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+
+    $scope.labels =["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec","Jan", "Feb"];
     $scope.data = [1, 9, 3, 4, 5, 6, 7, 8, 2].map(function(e){
       return Math.sin(e) * 25 +25;
     });
