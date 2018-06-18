@@ -100,12 +100,6 @@ let Property = {
                 },
 
 
-                // Fetch the timestamps of each entry of a power plant.
-                fetchTimeStepArray: async function(filename) {
-                    let data = await this.fetchData(filename);
-                    return this.getProperty(data, Property.TIME_STEP);
-                },
-
                 // Fetch a downsampled timestamp array.
                 fetchDownSampledTimeArray: async function(filename, n) {
                     let timeSteps = await this.fetchTimeStepArray(filename);
