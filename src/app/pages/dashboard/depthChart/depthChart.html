@@ -1,6 +1,9 @@
 <div id="controller" class="row" ng-app="Geothermal" ng-controller="DepthChartCtrl">
-    <div id="depthChart" class="dashboard-chart col-lg-9">
-    </div>
+    <div class="row">
+        <div class=" col-lg-9">
+            <div id="depthChart" class="dashboard-chart">
+            </div>
+        </div>
     <div class="control-group col-lg-3">
         <div class="control" ng-repeat="name in names" ng-model="names">
             <label class="nowrap">
@@ -8,5 +11,6 @@
                 <span ng-model="names">{{name}}</span>
             </label>
         </div>
+    </div>
     </div>
 </div>

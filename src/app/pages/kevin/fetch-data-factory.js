@@ -24,7 +24,7 @@ let Property = {
 
                 fetchTimeStepArray: async function(filename){
                     let data = await this.fetchData(filename);
-                    return data[0][Property.DEPTH];
+                    return this.getProperty(data, Property.TIME_STEP);
                 },
 
 
@@ -155,6 +155,11 @@ let Property = {
                     return array;
                 },
 
+                fetchDepth: async function(filename){
+                    let data = await this.fetchData(filename);
+                    return data[0]["depth"];
+                },
+
                 // Filter a set of data, so that only two properties are kept.
                 // This method returns a two-dimensional array. The inner arrays
                 // are pairs of the first and second property (the parameters).
@@ -162,12 +167,12 @@ let Property = {
                     let data = await this.fetchData(file);
                     let array = [];
 
-                    data.forEach(function (value) {
+                    data.forEach(value => {
                         let temp = [];
 
                         if (p1 = Property.TIME_STEP) {
                             // Format the timestamp into a string
-                            temp[p1] = new Date(value[p1] * 10000000).toDateString();
+                            temp[p1] = this.formatDate(value[p1] * 10000000);
                         } else {
                             temp[p1] = value[p1];
                         }
@@ -180,6 +185,118 @@ let Property = {
                     }
 
                     return array;
+                },
+
+                getAllProperties: async function(names, p1, p2, n){
+                    let array = [];
+                    for (name of names){
+                        array.push(await this.getProperties(name, p1, p2, n));
+                    }
+                    return array;
+                },
+
+                fetchDownSampledEfficiencyTimes: async function(names, downSampleRate){
+                    let efficiencies = [];
+                    for (let item of names) {
+                        let time = await this.fetchDownSampledTimeArray(item, downSampleRate);
+                        let value = await this.fetchDownSampledEfficiencyArray(item, downSampleRate);
+                        if (time.length === value.length) {
+                            let tmpArray = [];
+                            for (let i = 0; i < time.length; i++) {
+                                tmpArray.push({
+                                    time: time[i],
+                                    value: value[i]
+                                })
+                            }
+                            efficiencies.push(tmpArray);
+                        }
+                    }
+                    return efficiencies;
+                },
+
+                formatDate: function (date) {
+                     let d = new Date(date),
+                         month = '' + (d.getMonth() + 1),
+                         day = '' + d.getDate(),
+                         year = d.getFullYear();
+
+                     if (month.length < 2) month = '0' + month;
+                     if (day.length < 2) day = '0' + day;
+
+                     return [year, month, day].join('-');
+                 },
+
+                /**
+                 * puts all efficiencies into one array. is used in line chart
+                 * @param n
+                 * @returns {Promise<Array>}
+                 */
+                fetchTimeStepAllEfficiencies: async function (n) {
+                    let names = await this.getAllNames();
+                    let data = await this.getAllProperties(names,
+                        Property.TIME_STEP,
+                        Property.EFFICIENCY,
+                        n);
+                    let array = [];
+                    let firstIteration = true;
+                    for (let i = 0; i < data.length; i++){
+                        if (firstIteration){
+                            for (let j = 0; j < data[i].length; j++){
+                                let dummy = {};
+                                dummy[Property.TIME_STEP] = data[i][j][Property.TIME_STEP];
+                                dummy[names[i]] = data[i][j][Property.EFFICIENCY];
+                                array.push(dummy);
+                            }
+                            firstIteration = false;
+                        } else {
+                            for (let j = 0; j < data[i].length; j++){
+                                array[j][Property.TIME_STEP] = data[i][j][Property.TIME_STEP];
+                                array[j][names[i]] = data[i][j][Property.EFFICIENCY];
+                            }
+                        }
+                    }
+                    return array;
+                },
+
+                fetchTimeStepAllProperty: async function(n, property){
+                    let names = await this.getAllNames();
+                    let data = await this.getAllProperties(names,
+                        Property.TIME_STEP,
+                        property,
+                        n);
+                    let array = [];
+                    let firstIteration = true;
+                    for (let i = 0; i < data.length; i++){
+                        if (firstIteration){
+                            for (let j = 0; j < data[i].length; j++){
+                                let dummy = {};
+                                dummy[Property.TIME_STEP] = data[i][j][Property.TIME_STEP];
+                                dummy[names[i]] = data[i][j][property];
+                                array.push(dummy);
+                            }
+                            firstIteration = false;
+                        } else {
+                            for (let j = 0; j < data[i].length; j++){
+                                array[j][Property.TIME_STEP] = data[i][j][Property.TIME_STEP];
+                                array[j][names[i]] = data[i][j][property];
+                            }
+                        }
+                    }
+                    return array;
+                },
+
+                fetchNameDepthObject: async function () {
+                    let nameArray = await this.getAllNames();
+                    let object = {};
+                    for(let i = 0; i  < nameArray.length; i++){
+                        object[nameArray[i]] = await this.fetchDepth(nameArray[i]);
+                    }
+                    return object;
+                },
+
+                getAllCategories: async function(){
+                    let data  = await this.fetchData('1d8a69a5-b692-47b7-aacb-b7f26692c0ec');
+                    return Object.keys(data[0]);
                 }
             }
         });

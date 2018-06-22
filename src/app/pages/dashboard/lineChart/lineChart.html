@@ -1,10 +1,21 @@
 <div id="lineChartController" ng-app="Geothermal" ng-controller="DshbrdLineChartCtrl">
-    <div id="lineChart" class="dashboard-chart col-lg-9">
+    <div class="btn-group" uib-dropdown dropdown-append-to-body>
+        <button id="dropdown" type="button" class="btn btn-default" uib-dropdown-toggle>
+            EFFICIENCY <span class="caret"></span>
+        </button>
+        <ul uib-dropdown-menu>
+            <li><a class="dropdown-item" ng-repeat="category in categories" ng-model="categories" ng-click="changeButtonName(this)">{{category.replace("_", " ").toUpperCase()}}</a></li>
+        </ul>
     </div>
-    <div class="control col-lg-3" ng-repeat="name in names" ng-model="names">
-        <label class="checkbox-inline custom-checkbox nowrap">
-            <input ng-model="checkboxModel" type="checkbox" data-toggle="toggle">
+    <div class="row">
+        <div class="col-lg-9">
+            <div id="lineChart" class="dashboard-chart">
+
+            </div>
+        </div>
+        <div class="control col-lg-3" ng-repeat="name in names" ng-model="names">
+            <toggle ng-model="checkboxModel" ng-change="removeData(this)"></toggle>
             <span ng-model="names">{{name}}</span>
-        </label>
+        </div>
     </div>
 </div>
