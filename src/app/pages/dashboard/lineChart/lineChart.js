@@ -93,6 +93,8 @@
                     ],
                 });
 
+                console.log(lineChart.graphs);
+
                 lineChart.addListener('rendered', zoomChart);
                 if (lineChart.zoomChart) {
                     lineChart.zoomChart();
@@ -126,7 +128,11 @@
                 $scope.changeButtonName = async function (element) {
                     document.getElementById('lineChart').style.visibility = 'hidden';
                     document.getElementById('dropdown').childNodes[0].nodeValue = element.category.replace("_", " ").toUpperCase();
-                    lineChart.dataProvider  = await fetchDataFactory.fetchTimeStepAllProperty(downSampleRate, element.category);
+                    let dataProvider = await fetchDataFactory.fetchTimeStepAllProperty(downSampleRate, element.category);
+                    lineChart.dataProvider = dataProvider;
+                    for (let i = 0; i < $scope.names.length; i++){
+                        lineChart.graphs[i].negativeBase  = dataProvider[0][$scope.names[i]]*0.7;
+                    }
                     lineChart.validateData();
                     makeDiagramVisible();
                 }
