@@ -93,7 +93,6 @@
                     ],
                 });
 
-                console.log(lineChart.graphs);
 
                 lineChart.addListener('rendered', zoomChart);
                 if (lineChart.zoomChart) {
