@@ -33,7 +33,7 @@
                     // Make a line chart. Value and category are the properties to be plotted
                     function makeLineChart(category, value, data) {
                         console.log("makeLineChart: " + category + " | " + value + " (" + data.length + ")");
-                        AmCharts.makeChart("linediv", {
+                        return AmCharts.makeChart("linediv", {
                             "type": "serial",
                             "theme": "light",
                             "marginRight": 40,
@@ -108,7 +108,7 @@
                             "export": {
                                 "enabled": true
                             },
-                            "dataProvider": data
+                            "dataProvider": data,
                         });
                     }
 

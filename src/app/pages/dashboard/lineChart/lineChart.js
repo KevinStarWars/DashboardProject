@@ -31,6 +31,7 @@
                         negativeBase: allData[0][item]  * 0.75,
                     });
                 });
+
                 let lineChart = AmCharts.makeChart('lineChart', {
                     type: 'serial',
                     theme: 'blur',
