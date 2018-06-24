@@ -10,6 +10,9 @@ let Property = {
     NAME:               "name"
 };
 
+let FORTY_TWO_YEARS = 1324512000000;
+let ONE_HOUR = 3600000;
+
 (function () {
     'use strict';
 
@@ -171,8 +174,8 @@ let Property = {
                         let temp = [];
 
                         if (p1 = Property.TIME_STEP) {
-                            // Format the timestamp into a string
-                            temp[p1] = this.formatDate(value[p1] * 10000000);
+                            // Manipulate timestamp and convert to String
+                            temp[p1] = this.formatDate(value[p1] * ONE_HOUR + FORTY_TWO_YEARS);
                         } else {
                             temp[p1] = value[p1];
                         }
