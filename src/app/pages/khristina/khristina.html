@@ -1,8 +1,20 @@
 
-<div id="chartdiv"  ng-controller="KhristinaCtrl">
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+    }
+
+
+</style>
+
+
+
+<div ng-controller="KhristinaCtrl">
+
     <div class="row ">
         <div class="col-md-6" ng-controller="KhristinaCtrl">
-            <div ba-panel ba-panel-title="Efficiency" ba-panel-class="col-eq-height">
+            <div ba-panel ba-panel-title="Efficiency of Altheim" ba-panel-class="col-eq-height">
                 <div class="chartjs-canvas-holder-second-row">
                     <canvas id="waveLine" class="chart chart-radar" chart-data="[data]" chart-labels="labels"></canvas>
                 </div>
@@ -17,12 +29,31 @@
                             line-data='lineData'
                             line-xkey='y'
                             line-ykeys='["a", "b"]'
-                            line-labels='["Serie A", "Serie B"]'
+                            line-labels='["Altheim", "Traunreut"]'
                             line-colors='colors'>
                     </div>
                 </div>
             </div>
-
-
     </div>
 </div>
+<div id="chartdiv" ng-controller="KhristinaCtrl"></div>
+<script>
+function myFunction() {
+document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+var input, filter, ul, li, a, i;
+input = document.getElementById("myInput");
+filter = input.value.toUpperCase();
+div = document.getElementById("myDropdown");
+a = div.getElementsByTagName("a");
+for (i = 0; i < a.length; i++) {
+if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+a[i].style.display = "";
+} else {
+a[i].style.display = "none";
+}
+}
+}
+</script>

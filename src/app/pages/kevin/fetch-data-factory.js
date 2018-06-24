@@ -115,8 +115,42 @@ let Property = {
 
                 // Get the name of every power plant.
                 getAllNames: async function() {
+
                     let geoData = await this.fetchGeoData();
                     return this.getProperty(geoData, Property.NAME);
+
+
+
+                },
+                getNewNames: async function() {
+                    let names = [];
+                    let data= [ "Altheim", "Traunreut",  "Bad Urach", "Bruchsaal",  "Sauerlach",
+                        "Speyer",  "Unterhaching", "Kirchstockach",  "Taufkirchen", "Holzkirchen"];
+                    for (let i = 0; i < data.length; i++) {
+                        names.push(data[i]);
+                    }
+                    return names;
+                },
+
+                getAverageYear: async function(anlage) {
+                    let length_array = anlage.length - 8540;
+                    var avg_effiz = 0;
+                    let avg_eff = [];
+                    var k = 0;
+                    for (let i = 0; i < length_array; i++) {
+                        if (k < 365) {
+                            k++;
+                            avg_effiz += anlage[i];
+                        } else {
+                            k = 0;
+                            avg_effiz = avg_effiz / 365;
+                            avg_eff.push(avg_effiz);
+                            avg_effiz = 0;
+
+                        }
+                    }
+                    return avg_eff;
+
                 },
 
                 // Fetch an array of each power plant's name and it's respective depth.
