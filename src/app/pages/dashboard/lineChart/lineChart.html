@@ -1,7 +1,7 @@
 <div id="lineChartController" ng-app="Geothermal" ng-controller="DshbrdLineChartCtrl">
     <div class="btn-group" uib-dropdown dropdown-append-to-body>
         <button id="dropdown" type="button" class="btn btn-default" uib-dropdown-toggle>
-            EFFICIENCY <span class="caret"></span>
+            {{category[0]}}<span class="caret"></span>
         </button>
         <ul uib-dropdown-menu>
             <li><a class="dropdown-item" ng-repeat="category in categories" ng-model="categories" ng-click="changeButtonName(this)">{{category.replace("_", " ").toUpperCase()}}</a></li>

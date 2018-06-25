@@ -8,6 +8,7 @@
                    // let data_test = await fetchDataFactory.getNewNames();
                    // console.log(data_test)
 
+                    $scope.names = await fetchDataFactory.getAllNames();
 
                     let anlage_one_efficiency= await fetchDataFactory.fetchEfficiencyArray('1d8a69a5-b692-47b7-aacb-b7f26692c0ec', 0);
                     let anlage_two_efficiency = await fetchDataFactory.fetchEfficiencyArray('6b423e19-9f02-4374-8391-5075a57ecfdc',0);

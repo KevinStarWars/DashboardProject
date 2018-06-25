@@ -10,8 +10,12 @@ let Property = {
     NAME:               "name"
 };
 
-let FORTY_TWO_YEARS = 1324512000000;
-let ONE_HOUR = 3600000;
+/**
+ * 1000 ms * 60 sec * 60 min * 24 h * 365 d * 30 y
+ * @type {number}
+ */
+let THIRTY_YEARS = 946080000000;
+let TWELVE_HOURS = 12 * 60 * 60 * 1000;
 
 (function () {
     'use strict';
@@ -135,25 +139,18 @@ let ONE_HOUR = 3600000;
                     return names;
                 },
 
-                getAverageYear: async function(anlage) {
-                    let length_array = anlage.length - 8540;
-                    var avg_effiz = 0;
-                    let avg_eff = [];
-                    var k = 0;
-                    for (let i = 0; i < length_array; i++) {
-                        if (k < 365) {
-                            k++;
-                            avg_effiz += anlage[i];
-                        } else {
-                            k = 0;
-                            avg_effiz = avg_effiz / 365;
-                            avg_eff.push(avg_effiz);
-                            avg_effiz = 0;
-
+                getAverageYear: async function(filename, property, n) {
+                    let data = await fetchDataFactory.getProperties(filename, Property.TIME_STEP, property, n);
+                    let temp = [];
+                    data.forEach(function (item) {
+                        let year = new Date(Date.parse(item[Property.TIME_STEP])).getFullYear();
+                        if (!temp.includes(year)){
+                            temp.push(year);
+                            temp[year] = [];
                         }
-                    }
-                    return avg_eff;
-
+                        temp[year].push(item[property]);
+                    });
+                    return temp;
                 },
 
                 // Fetch an array of each power plant's name and it's respective depth.
@@ -209,7 +206,7 @@ let ONE_HOUR = 3600000;
 
                         if (p1 = Property.TIME_STEP) {
                             // Manipulate timestamp and convert to String
-                            temp[p1] = this.formatDate(value[p1] * ONE_HOUR + FORTY_TWO_YEARS);
+                            temp[p1] = this.formatDate(value[p1] * TWELVE_HOURS + THIRTY_YEARS);
                         } else {
                             temp[p1] = value[p1];
                         }

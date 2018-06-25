@@ -15,6 +15,9 @@
                     };
 
                     // List of values for the drop-down menu
+                    /**
+                     * todo:    filter properties. does not make sense to have depth, id, name and temperature in it
+                     */
                     $scope.values = Property;
 
                     // Default values for the drop-down menu

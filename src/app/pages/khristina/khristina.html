@@ -11,9 +11,44 @@
 
 
 <div ng-controller="KhristinaCtrl">
-
+    <div class="section-block">
+        <h1>Comparison of nameOne and nameTwo</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div class="control">
+                <div ba-panel ba-panel-title="Notes" ba-panel-class="xsmall-panel light-text">
+                <textarea class="form-control" id="notes" rows="3" style="border: 0 none"
+                          placeholder="Enter a message ..."></textarea>
+                    <button class="btn btn-default pull-right">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div ba-panel ba-panel-title="Panel with header" ba-panel-class="xsmall-panel light-text">
+            <div class="btn-group" uib-dropdown dropdown-append-to-body>
+                <button type="button" class="btn btn-default" uib-dropdown-toggle style="width: 100%">
+                    {{names[0]}}
+                </button>
+                <ul uib-dropdown-menu>
+                    <li><a class="dropdown-item" ng-repeat="name in names" ng-model="categories" ng-click="changeButtonName(this)">{{name.replace("_", " ").toUpperCase()}}</a></li>
+                </ul>
+            </div>
+            <div class="btn-group pull-right" uib-dropdown dropdown-append-to-body>
+                <button type="button" class="btn btn-default" uib-dropdown-toggle style="width: 100%">
+                    {{names[1]}}
+                </button>
+                <ul uib-dropdown-menu>
+                    <li><a class="dropdown-item" ng-repeat="name in names" ng-model="categories" ng-click="changeButtonName(this)">{{name.replace("_", " ").toUpperCase()}}</a></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+    </div>
     <div class="row ">
-        <div class="col-md-6" ng-controller="KhristinaCtrl">
+        <div class="col-md-6">
             <div ba-panel ba-panel-title="Efficiency of Altheim" ba-panel-class="col-eq-height">
                 <div class="chartjs-canvas-holder-second-row">
                     <canvas id="waveLine" class="chart chart-radar" chart-data="[data]" chart-labels="labels"></canvas>
