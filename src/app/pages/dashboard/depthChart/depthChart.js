@@ -13,7 +13,7 @@
                 dataProvider.push({
                     geothermal: value[0],
                     depth: parseFloat(value[1]),
-                    color: commonFunctions.getDepthColor() 
+                    color: commonFunctions.getDepthColor()
                 })
             });
             let barChart = AmCharts.makeChart('depthChart', {

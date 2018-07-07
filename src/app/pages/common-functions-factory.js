@@ -2,8 +2,8 @@
     'use strict';
 
     angular.module('Geothermal.pages')
-        .factory('commonFunctions',['baConfig', 'fetchDataFactory',
-            function(baConfig, fetchDataFactory) {
+        .factory('commonFunctions',['baConfig',
+            function(baConfig) {
             return{
                 getRandomColor: function () {
                     let layoutColors = baConfig.colors;
@@ -19,6 +19,22 @@
 
                 getDepthColor: function(){
                     return "#7a5230";
+                },
+
+                getLineChartColor: function(i){
+                    let colorArray = [
+                        "#8c510a",
+                        "#01665e",
+                        "#c51b7d",
+                        "#000000",
+                        "#762a83",
+                        "#1b7837",
+                        "#b35806",
+                        "#4d4d4d",
+                        "#fdbf6f",
+                        "#cab2d6"
+                    ];
+                    return colorArray[i];
                 },
 
                 /**

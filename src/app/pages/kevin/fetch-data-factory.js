@@ -21,7 +21,7 @@ let TWELVE_HOURS = 12 * 60 * 60 * 1000;
     'use strict';
 
     angular.module('Geothermal.pages.kevin')
-        .factory('fetchDataFactory',function() {
+        .factory('fetchDataFactory', ['commonFunctions', function(commonFunctions) {
 
             return {
                 fetchData: async function(filename) {
@@ -124,6 +124,18 @@ let TWELVE_HOURS = 12 * 60 * 60 * 1000;
                 getAllNames: async function() {
                     let geoData = await this.fetchGeoData();
                     return this.getProperty(geoData, Property.NAME);
+                },
+
+                getAllNamesWithColors: async function(){
+                    let geoData = await this.fetchGeoData();
+                    let  returnArray = [];
+                    for (let i = 0; i < geoData.length; i++){
+                        returnArray.push({
+                            name: geoData[i]['name'],
+                            color: commonFunctions.getLineChartColor(i)
+                        })
+                    }
+                    return returnArray;
                 },
 
                 getNewNames: async function() {
@@ -353,5 +365,5 @@ let TWELVE_HOURS = 12 * 60 * 60 * 1000;
                     return dataSet;
                 }
             }
-        });
+        }]);
 })();
