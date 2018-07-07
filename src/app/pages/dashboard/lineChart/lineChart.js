@@ -17,7 +17,6 @@
                 });
                 $scope.names = await fetchDataFactory.getAllNames();
                 $scope.checkboxModel = true;
-                console.log(allData);
                 $scope.names.forEach(function (item) {
                     graphs.push({
                         id: item,

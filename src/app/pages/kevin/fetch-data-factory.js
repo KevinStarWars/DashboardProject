@@ -122,21 +122,13 @@ let TWELVE_HOURS = 12 * 60 * 60 * 1000;
 
                 // Get the name of every power plant.
                 getAllNames: async function() {
-
                     let geoData = await this.fetchGeoData();
                     return this.getProperty(geoData, Property.NAME);
-
-
-
                 },
+
                 getNewNames: async function() {
-                    let names = [];
-                    let data= [ "Altheim", "Traunreut",  "Bad Urach", "Bruchsaal",  "Sauerlach",
-                        "Speyer",  "Unterhaching", "Kirchstockach",  "Taufkirchen", "Holzkirchen"];
-                    for (let i = 0; i < data.length; i++) {
-                        names.push(data[i]);
-                    }
-                    return names;
+                    return ["Altheim", "Traunreut", "Bad Urach", "Bruchsaal", "Sauerlach",
+                        "Speyer", "Unterhaching", "Kirchstockach", "Taufkirchen", "Holzkirchen"];
                 },
 
                 getAverageYear: async function(filename, property, n) {
@@ -331,6 +323,34 @@ let TWELVE_HOURS = 12 * 60 * 60 * 1000;
                 getAllCategories: async function(){
                     let data  = await this.fetchData('1d8a69a5-b692-47b7-aacb-b7f26692c0ec');
                     return Object.keys(data[0]);
+                },
+
+                getLastValues: async function(){
+                    let names = await this.getAllNames();
+                    let data = [];
+                    for (let i = 0; i < names.length; i++){
+                        data.push(await this.fetchData(names[i]));
+                    }
+                    let lastDataSet = [];
+                    data.forEach(function (item) {
+                        lastDataSet.push(item[item.length-1])
+                    });
+                    return lastDataSet;
+                },
+
+                getFirstAndLastValues: async function(){
+                    let names = await this.getAllNames();
+                    let data = [];
+                    for (let i = 0; i < names.length; i++){
+                        data.push(await this.fetchData(names[i]));
+                    }
+                    let dataSet = [];
+                    data.forEach(function (item) {
+                        dataSet.push({
+                            first: item[0],
+                            last: item[item.length-1]})
+                    });
+                    return dataSet;
                 }
             }
         });
