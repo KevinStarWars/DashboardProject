@@ -8,12 +8,20 @@
     function routeConfig($stateProvider) {
         $stateProvider
             .state('marvin', {
-                url: '/marvin',
+                url: '/detailView',
                 templateUrl: 'app/pages/marvin/marvin.html',
-                title: 'Marvin',
+                title: 'Detailed View',
                 sidebarMeta: {
                     order: 800,
                 },
+            })
+            .state('marvin.id', {
+                url: '/detailView/{plantId}',
+                templateUrl: 'app/pages/marvin/marvin.html',
+                controller: function ($stateParams) {
+                    console.log($stateParams);
+                    $scope.selectedPlant = $stateParams.plantId;
+                }
             });
     }
 
