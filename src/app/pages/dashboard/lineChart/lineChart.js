@@ -15,21 +15,25 @@
                         $scope.categories.push(category)
                     }
                 });
-                $scope.names = await fetchDataFactory.getAllNames();
+                $scope.names = await fetchDataFactory.getAllNamesWithColors();
                 $scope.checkboxModel = true;
+                let i = 0;
+                fetchDataFactory.getAllNamesWithColors();
                 $scope.names.forEach(function (item) {
                     graphs.push({
-                        id: item,
-                        balloonText: '[[' + item + ']]',
+                        id: item['name'],
+                        balloonText: '',
                         bullet: 'round',
                         bulletSize: 8,
-                        lineColor: commonFunctions.getRandomColor(),
+                        lineColor: item['color'],
                         lineThickness: 1,
                         negativeLineColor: commonFunctions.getWarningColor(),
                         type: 'smoothedLine',
-                        valueField: item,
-                        negativeBase: allData[0][item]  * 0.75,
+                        valueField: item['name'],
+                        negativeBase: allData[0][item['name']]  * 0.75,
+                        negativeFillAlphas: 1,
                     });
+                    i++;
                 });
 
                 let lineChart = AmCharts.makeChart('lineChart', {
@@ -67,7 +71,7 @@
                         categoryBalloonDateFormat: 'YYYY-MM-DD',
                         cursorAlpha: 0,
                         valueLineEnabled: true,
-                        valueLineBalloonEnabled: true,
+                        valueLineBalloonEnabled: false,
                         valueLineAlpha: 0.5,
                         fullWidth: true
                     },
@@ -113,9 +117,10 @@
                 }
 
                 $scope.removeData = function(element) {
+                    console.log(element.name['name']);
                     let graphs = lineChart.graphs;
                     graphs.forEach(function (graph) {
-                        if (graph.id === element.name){
+                        if (graph.id === element.name['name']){
                             if (element.checkboxModel === false){
                                 lineChart.hideGraph(graph);
                             } else {

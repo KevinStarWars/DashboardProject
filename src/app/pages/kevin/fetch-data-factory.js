@@ -21,7 +21,7 @@ let TWELVE_HOURS = 12 * 60 * 60 * 1000;
     'use strict';
 
     angular.module('Geothermal.pages.kevin')
-        .factory('fetchDataFactory',function() {
+        .factory('fetchDataFactory', ['commonFunctions', function(commonFunctions) {
 
             return {
                 fetchData: async function(filename) {
@@ -122,21 +122,25 @@ let TWELVE_HOURS = 12 * 60 * 60 * 1000;
 
                 // Get the name of every power plant.
                 getAllNames: async function() {
-
                     let geoData = await this.fetchGeoData();
                     return this.getProperty(geoData, Property.NAME);
-
-
-
                 },
-                getNewNames: async function() {
-                    let names = [];
-                    let data= [ "Altheim", "Traunreut",  "Bad Urach", "Bruchsaal",  "Sauerlach",
-                        "Speyer",  "Unterhaching", "Kirchstockach",  "Taufkirchen", "Holzkirchen"];
-                    for (let i = 0; i < data.length; i++) {
-                        names.push(data[i]);
+
+                getAllNamesWithColors: async function(){
+                    let geoData = await this.fetchGeoData();
+                    let  returnArray = [];
+                    for (let i = 0; i < geoData.length; i++){
+                        returnArray.push({
+                            name: geoData[i]['name'],
+                            color: commonFunctions.getLineChartColor(i)
+                        })
                     }
-                    return names;
+                    return returnArray;
+                },
+
+                getNewNames: async function() {
+                    return ["Altheim", "Traunreut", "Bad Urach", "Bruchsaal", "Sauerlach",
+                        "Speyer", "Unterhaching", "Kirchstockach", "Taufkirchen", "Holzkirchen"];
                 },
 
                 getAverageYear: async function(filename, property, n) {
@@ -331,7 +335,35 @@ let TWELVE_HOURS = 12 * 60 * 60 * 1000;
                 getAllCategories: async function(){
                     let data  = await this.fetchData('1d8a69a5-b692-47b7-aacb-b7f26692c0ec');
                     return Object.keys(data[0]);
+                },
+
+                getLastValues: async function(){
+                    let names = await this.getAllNames();
+                    let data = [];
+                    for (let i = 0; i < names.length; i++){
+                        data.push(await this.fetchData(names[i]));
+                    }
+                    let lastDataSet = [];
+                    data.forEach(function (item) {
+                        lastDataSet.push(item[item.length-1])
+                    });
+                    return lastDataSet;
+                },
+
+                getFirstAndLastValues: async function(){
+                    let names = await this.getAllNames();
+                    let data = [];
+                    for (let i = 0; i < names.length; i++){
+                        data.push(await this.fetchData(names[i]));
+                    }
+                    let dataSet = [];
+                    data.forEach(function (item) {
+                        dataSet.push({
+                            first: item[0],
+                            last: item[item.length-1]})
+                    });
+                    return dataSet;
                 }
             }
-        });
+        }]);
 })();
