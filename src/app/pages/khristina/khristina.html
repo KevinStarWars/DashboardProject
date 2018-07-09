@@ -1,13 +1,33 @@
 
 <style>
-    #chartdiv {
-        width: 100%;
-        height: 500px;
+
+    .btn-group{ margin-bottom: 30px}
+    .btn btn-default pull-right {
+        margin-bottom: 100px;
+        position: relative;
+
+
+    }
+    #linediv {
+        width	: 100%;
+        height	: 500px;
+    }
+    #chart {
+        width	: 100%;
+        height	: 500px;
+    }
+    .col-md-6 {
+        background: #FFFFFF;
+        margin-left: 14px;
+        width: 48%;
+    }
+    .btn{
+        margin-bottom: 15px;
     }
 
 
-</style>
 
+</style>
 
 
 <div ng-controller="KhristinaCtrl">
@@ -16,12 +36,30 @@
     </div>
     <div class="row">
         <div class="col-md-12 col-lg-12">
+            <div class="btn-group" uib-dropdown dropdown-append-to-body>
+                <button type="button" class="btn btn-primary " uib-dropdown-toggle>
+                    Primary <span class="caret"></span>
+                </button>
+                <ul uib-dropdown-menu>
+                    <li><a href>Action</a></li>
+                    <li><a href>Another action</a></li>
+                    <li><a href>Something else here</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href>Separated link</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-12">
             <div class="control">
                 <div ba-panel ba-panel-title="Notes" ba-panel-class="xsmall-panel light-text">
                 <textarea class="form-control" id="notes" rows="3" style="border: 0 none"
                           placeholder="Enter a message ..."></textarea>
-                    <button class="btn btn-default pull-right">Save</button>
+
+                    <button class="btn btn-default pull-right" >Save</button>
+
                 </div>
+
+
             </div>
         </div>
     </div>
@@ -46,32 +84,31 @@
             </div>
             </div>
         </div>
-    </div>
-    <div class="row ">
-        <div class="col-md-6">
-            <div ba-panel ba-panel-title="Efficiency of Altheim" ba-panel-class="col-eq-height">
-                <div class="chartjs-canvas-holder-second-row">
-                    <canvas id="waveLine" class="chart chart-radar" chart-data="[data]" chart-labels="labels"></canvas>
-                </div>
 
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div ba-panel ba-panel-title="hallo" ba-panel-class="with-scroll">
+                <div id="linediv">
+
+                </div>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div ba-panel ba-panel-title="hallo" ba-panel-class="with-scroll">
+                <div id="Chart">
 
-            <div class="col-md-12">
-                <div ba-panel ba-panel-title="Difference between Gross Schoenebeck and Bad Urach" ba-panel-class="with-scroll">
-                    <div
-                            line-chart
-                            line-data='lineData'
-                            line-xkey='y'
-                            line-ykeys='["a", "b"]'
-                            line-labels='["Altheim", "Traunreut"]'
-                            line-colors='colors'>
-                    </div>
                 </div>
             </div>
+        </div>
     </div>
+    </div>
+
+
+
 </div>
-<div id="chartdiv" ng-controller="KhristinaCtrl"></div>
 <script>
 function myFunction() {
 document.getElementById("myDropdown").classList.toggle("show");
