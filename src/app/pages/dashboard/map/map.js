@@ -23,6 +23,10 @@
 
                     /**
                      * sets zoom listener for map
+                     * for zoom = 5: usual markers are shown
+                     * for zoom = 6: warnings are shown
+                     * for zoom = 7: glyphs are shown
+                     *
                      * @param map
                      * @param allMarkers
                      */
@@ -30,22 +34,6 @@
                         map.addListener('zoom_changed', async function () {
                             let zoom = map.getZoom();
                             switch (zoom){
-                                case 0:
-                                    removeMarkers();
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 1:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 2:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 3:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 4:
-                                    console.log('level:' + zoom);
-                                    break;
                                 case 5:
                                     removeLegend();
                                     await initializeMarkers(map);
@@ -59,58 +47,12 @@
                                     showGlyphLegend();
                                     await initializeGlyphs(map);
                                     break;
-                                case 8:
-                                    break;
-                                case 9:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 10:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 11:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 12:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 13:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 14:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 15:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 16:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 17:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 18:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 19:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 20:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 21:
-                                    console.log('level:' + zoom);
-                                    break;
-                                case 22:
-                                    console.log('level:' + zoom);
-                                    break;
-                                default:
-                                    console.log('unknown zoom level - ' + zoom);
                             }
                         })
                     }
 
                     /**
-                     * removes a marker from the map
+                     * removes all markers from the map
                      *
                      */
                     function removeMarkers(){
@@ -190,7 +132,6 @@
                                })
                            }
                         });
-                        console.log(warnings);
 
                         warnings.forEach(function (value) {
                             let longLat = {lat: parseFloat(value['latitude']), lng: parseFloat(value['longitude'])};
@@ -201,7 +142,7 @@
                                         icon: {
                                             path: fontawesome.markers.WARNING,
                                             strokeColor: 'black',
-                                            fillColor: 'red',
+                                            fillColor: commonFunctions.getWarningColor(),
                                             fillOpacity: 0.7
                                         }
                                     }
@@ -227,7 +168,7 @@
                                         icon: {
                                             path: fontawesome.markers.CHECK,
                                             strokeColor: 'black',
-                                            fillColor: 'green',
+                                            fillColor: commonFunctions.getWorkingColor(),
                                             fillOpacity: 0.7
                                         }
                                     }
@@ -262,7 +203,6 @@
                         removeMarkers();
 
                         markerData.forEach(function (value) {
-                            console.log(value['HtmlString']);
                             let longLat = {lat: parseFloat(value['latitude']), lng: parseFloat(value['longitude'])};
                             let marker = new google.maps.Marker({
                                     position: longLat,
@@ -330,8 +270,8 @@
                     function showWarningLegend(){
                         removeLegendContent();
                         document.getElementById("legend-wrapper").innerHTML =
-                            '<p><i class="fa fa-warning" style="color: red"></i> Warning</p>' +
-                            '<p><i class="fa fa-check" style="color: green"></i> Everything is working fine</p>';
+                            '<p><i class="fa fa-warning" style="color: ' + commonFunctions.getWarningColor() + '"></i> Warning</p>' +
+                            '<p><i class="fa fa-check" style="color: ' + commonFunctions.getWorkingColor() + '"></i> Everything is working fine</p>';
                     }
 
                     $timeout(async function(){
