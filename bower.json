@@ -69,7 +69,8 @@
         "./dist/amcharts/serial.js",
         "./dist/amcharts/funnel.js",
         "./dist/amcharts/pie.js",
-        "./dist/amcharts/gantt.js"
+        "./dist/amcharts/gantt.js",
+        "./dist/amcharts/gauge.js"
       ]
     },
     "amcharts-stock": {

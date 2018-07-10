@@ -1,18 +1,75 @@
 <style>
     #linediv {
-        width	: 100%;
-        height	: 500px;
+        width: 100%;
+        height: 500px;
     }
-</style>
-<div ng-app="Geothermal.pages.marvin">
 
-    <!-- Drop down menus -->
-    <div id="property_1" ng-controller="MarvinCtrl">
-        <select ng-model="prop1" ng-options="c for c in values" ng-change="updateChart()"></select>
-        <select ng-model="prop2" ng-options="c for c in values" ng-change="updateChart()"></select>
+    #drop-down {
+    }
+
+    #text-area {
+        width: 50%;
+        float: left;
+    }
+
+    #gauge-panel {
+        width: 40%;
+        overflow: hidden;
+    }
+
+    #line-chart-panel {
+
+    }
+
+</style>
+<div ng-app="Geothermal.pages.marvin" ng-controller="MarvinCtrl">
+
+    <!-- TODO: Fix layout (Dropdown menu and gauge -->
+
+    <!-- Dropdown menu to select the power plant -->
+    <div id="drop-down" class="btn-group" uib-dropdown dropdown-append-to-body>
+
+        <button id="dropdown" type="button" class="btn btn-default" uib-dropdown-toggle>
+            <span id="selected">{{selectedPlant}}</span><span class="caret"></span>
+        </button>
+
+        <ul uib-dropdown-menu>
+            <li><a class="dropdown-item" ng-repeat="name in powerplants" ng-model="name" ng-click="changePlant(this)">{{name}}</a></li>
+        </ul>
+
     </div>
 
-    <!-- Div for the line chart -->
-    <div id="linediv" ng-controller="MarvinCtrl"></div>
+
+    <!-- Text area for power plant summary and notes -->
+    <div id="text-area" class="row">
+        <div class="col-md-12 col-lg-12">
+            <div class="control">
+
+                <div ba-panel ba-panel-title="Notes" ba-panel-class="xsmall-panel light-text">
+                    <textarea class="form-control" id="notes" rows="3" style="border: 0 none" placeholder="Enter a message ..."></textarea>
+                        <button class="btn btn-default pull-right">Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Gauge -->
+    <div id="gauge-panel" class="col-lg-12 col-md-12"
+         ba-panel
+         ba-panel-title="Gauge"
+         ba-panel-class="with-scroll"
+         style="display: none">
+        <gauge-detail></gauge-detail>
+    </div>
+
+    <!-- Line chart -->
+    <div id="line-chart-panel" class="col-lg-12 col-md-12"
+         ba-panel
+         ba-panel-title="Line Chart"
+         ba-panel-class="with-scroll"
+         style="display: none">
+        <line-chart-detail></line-chart-detail>
+    </div>
 
 </div>
