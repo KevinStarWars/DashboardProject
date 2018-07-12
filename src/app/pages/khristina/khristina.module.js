@@ -14,6 +14,14 @@
                 sidebarMeta: {
                     order: 800,
                 },
+            })
+            .state('khristina.id', {
+                url: '/khristina/{plantId}',
+                templateUrl: 'app/pages/khristina/khristina.html',
+                controller: function ($stateParams) {
+                    console.log($stateParams);
+                    $scope.selectedPlant = $stateParams.plantId;
+                }
             });
     }
 

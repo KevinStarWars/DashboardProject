@@ -1,15 +1,15 @@
 (function () {
     'use strict';
 
-    angular.module('Geothermal.pages.marvin')
-        .directive('lineChartDetail', lineChartDetail);
+    angular.module('Geothermal.pages.khristina')
+        .directive('lineChartOne', lineChartOne);
 
     /** @ngInject */
-    function lineChartDetail() {
+    function lineChartOne() {
         return {
             restrict: 'E',
-            controller: 'LineChartDetailCtrl',
-            templateUrl: 'app/pages/marvin/lineChartDetail/lineChartDetail.html'
+            controller: 'LineChartOneCtrl',
+            templateUrl: 'app/pages/khristina/lineChartOne/lineChartOne.html'
         };
     }
 })();

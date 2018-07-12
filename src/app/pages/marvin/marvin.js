@@ -4,7 +4,6 @@
     angular.module('Geothermal.pages.marvin')
         .controller('MarvinCtrl',
             ['$scope', 'fetchDataFactory', 'baConfig', '$timeout',
-
                 async function MarvinCtrl($scope, fdf, baConfig, $timeout) {
 
                     $scope.changePlant = async function (element) {

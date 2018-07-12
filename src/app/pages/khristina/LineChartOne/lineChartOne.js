@@ -1,10 +1,10 @@
 (function () {
         'use strict';
 
-        angular.module('Geothermal.pages.marvin')
-            .controller('LineChartDetailCtrl',
+        angular.module('Geothermal.pages.khristina')
+            .controller('LineChartOneCtrl',
                 ['$scope', 'baConfig', 'fetchDataFactory', 'layoutPaths', 'commonFunctions',
-                    async function LineChartDetailCtrl($scope, baConfig, fdf, layoutPaths, commonFunctions) {
+                    async function LineChartOneCtrl($scope, baConfig, fetchDataFactory, layoutPaths, commonFunctions) {
 
                         // List of relevant Properties
                         $scope.properties = {
@@ -16,8 +16,12 @@
 
                         // Default value for the drop-down menu
                         $scope.selectedProperty = Property.EFFICIENCY;
+                        $scope.selectedPlant = '1d8a69a5-b692-47b7-aacb-b7f26692c0ec';
 
-                        let data = await fdf.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
+
+                        let data = await fetchDataFactory.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
+                        console.log(data);
+
                         let line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
                         zoomChart();
 
@@ -25,7 +29,7 @@
 
                         // Broadcast listener, called when the selected plant is changed
                         $scope.$on('plant_changed', async function() {
-                            data = await fdf.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
+                            data = await fetchDataFactory.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
                             zoomChart()
                         });
@@ -33,7 +37,7 @@
                         // Called when the selected property is changed
                         $scope.updateChart = async function (element) {
                             $scope.selectedProperty = element.p;
-                            data = await fdf.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
+                            data = await fetchDataFactory.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
                             zoomChart();
                             document.getElementById("selected-property").nodeValue = element.p;
@@ -58,23 +62,26 @@
                                     "ignoreAxisWidth":true
                                 }],
                                 "balloon": {
-                                    "borderThickness": 1,
-                                    "shadowAlpha": 0
+                                    "borderThickness": 3,
+                                    "shadowAlpha": 1
                                 },
                                 "graphs": [{
                                     "id": "g1",
+                                    "balloonText": "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
                                     "balloon":{
                                         "drop":true,
                                         "adjustBorderColor":false,
-                                        "color":"#ffffff"
+                                        "color":"#ff0c03"
                                     },
                                     "bullet": "round",
                                     "bulletBorderAlpha": 1,
-                                    "bulletColor": "#FFFFFF",
-                                    "bulletSize": 5,
+                                    "bulletColor": "#ff0a13",
+                                    "bulletSize": 8,
                                     "hideBulletsCount": 50,
                                     "lineThickness": 2,
                                     "title": "red line",
+                                    "lineColor": "#d1655d",
+                                    "type": "smoothedLine",
                                     "useLineColorForBulletBorder": true,
                                     "valueField": value,
                                     "balloonFunction": function (item) {
@@ -85,6 +92,7 @@
                                 "chartScrollbar": {
                                     "graph": "g1",
                                     "oppositeAxis":false,
+                                    "gridAlpha":0,
                                     "offset":30,
                                     "scrollbarHeight": 80,
                                     "backgroundAlpha": 0,
@@ -94,10 +102,13 @@
                                     "graphLineAlpha": 0.5,
                                     "selectedGraphFillAlpha": 0,
                                     "selectedGraphLineAlpha": 1,
+                                    "graphLineColor":"#42a2c2",
+                                    "selectedGraphLineColor":"#2e886c",
                                     "autoGridCount":true,
-                                    "color":"#AAAAAA"
+                                    "color":"#193c88"
                                 },
                                 "chartCursor": {
+                                    "categoryBalloonDateFormat": "YYYY",
                                     "pan": true,
                                     "valueLineEnabled": true,
                                     "valueLineBalloonEnabled": true,
@@ -116,6 +127,7 @@
                                 "categoryAxis": {
                                     "parseDates": true,
                                     "dashLength": 1,
+                                    "minorGridAlpha": 0.1,
                                     "minorGridEnabled": true
                                 },
                                 "export": {
@@ -125,29 +137,23 @@
                             });
                         }
 
-                        function getBalloonText(item) {
-                            let unit = "";
-
-                            switch ($scope.selectedProperty) {
-                                case Property.EFFICIENCY:
-                                    unit = "%";
-                                    break;
-                                case Property.ELECTRICAL_POWER:
-                                    unit = "kW/h";
-                                    break;
-                                case Property.GEOTHERMAL_POWER:
-                                    unit = "kW/h";
-                                    break;
-                                case Property.EXTRACTION_RATE:
-                                    unit = "l/min";
-                                    break;
-                            }
-                            return "<b>" + Math.round(item.values.value) + " " + unit + "</b>";
-                        }
-
                         function zoomChart() {
                             line.zoomToIndexes(line.dataProvider.length - 40, line.dataProvider.length - 1);
                         }
+
+                        $scope.changePlant = async function (element) {
+                            $scope.selectedPlant = element.name;
+                            document.getElementById("selected").nodeValue = element.name;
+
+                            // Broadcast change to child controllers
+                            $scope.$broadcast('plant_changed');
+                        };
+
+                        $scope.powerplants = await fetchDataFactory.getAllNames();
+                        console.log("powerplants " + $scope.powerplants);
+                        $scope.selectedPlant = $scope.powerplants[0];
+                        console.log("selected main " + $scope.selectedPlant);
+
 
                     }
                 ]

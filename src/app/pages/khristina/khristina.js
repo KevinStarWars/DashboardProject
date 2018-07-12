@@ -4,33 +4,143 @@
     angular.module('Geothermal.pages.khristina')
         .controller('KhristinaCtrl',
             ['$scope', 'fetchDataFactory', 'baConfig', '$timeout','$interval', 'stopableInterval','$window',
-                async function KhristinaCtrl($scope, fetchDataFactory, $timeout, baConfig, $interval, stopableInterval, $window) {
+                async function KhristinaCtrl($scope, fetchDataFactory, $timeout, baConfig, $interval, stopableInterval, $window, fdf) {
+
+                    var chartData = generateChartData();
+
+                    var chart = AmCharts.makeChart("chartdiv", {
+                        "type": "serial",
+                        "theme": "light",
+                        "legend": {
+                            "useGraphSettings": true
+                        },
+                        "dataProvider": chartData,
+                        "synchronizeGrid":true,
+                        "valueAxes": [{
+                            "id":"v1",
+                            "axisColor": "#FF6600",
+                            "axisThickness": 2,
+                            "axisAlpha": 1,
+                            "position": "left"
+                        }, {
+                            "id":"v2",
+                            "axisColor": "#FCD202",
+                            "axisThickness": 2,
+                            "axisAlpha": 1,
+                            "position": "right"
+                        }, {
+                            "id":"v3",
+                            "axisColor": "#B0DE09",
+                            "axisThickness": 2,
+                            "gridAlpha": 0,
+                            "offset": 50,
+                            "axisAlpha": 1,
+                            "position": "left"
+                        }],
+                        "graphs": [{
+                            "valueAxis": "v1",
+                            "lineColor": "#FF6600",
+                            "bullet": "round",
+                            "bulletBorderThickness": 1,
+                            "hideBulletsCount": 30,
+                            "title": "red line",
+                            "valueField": "visits",
+                            "fillAlphas": 0
+                        }, {
+                            "valueAxis": "v2",
+                            "lineColor": "#FCD202",
+                            "bullet": "square",
+                            "bulletBorderThickness": 1,
+                            "hideBulletsCount": 30,
+                            "title": "yellow line",
+                            "valueField": "hits",
+                            "fillAlphas": 0
+                        }],
+                        "chartScrollbar": {
+                            "oppositeAxis":false
+                        },
+                        "chartCursor": {
+                            "cursorPosition": "mouse"
+                        },
+                        "categoryField": "date",
+                        "categoryAxis": {
+                            "parseDates": true,
+                            "axisColor": "#DADADA",
+                            "minorGridEnabled": true
+                        },
+                        "export": {
+                            "enabled": true,
+                            "position": "bottom-right"
+                        }
+                    });
+
+                    chart.addListener("dataUpdated", zoomChart);
+                    zoomChart();
+
+
+// generate some random data, quite different range
+                    function generateChartData() {
+                        var chartData = [];
+                        var firstDate = new Date();
+                        firstDate.setDate(firstDate.getDate() - 100);
+
+                        var visits = 1600;
+                        var hits = 2900;
+                        var views = 8700;
+
+
+                        for (var i = 0; i < 100; i++) {
+                            // we create date objects here. In your data, you can have date strings
+                            // and then set format of your dates using chart.dataDateFormat property,
+                            // however when possible, use date objects, as this will speed up chart rendering.
+                            var newDate = new Date(firstDate);
+                            newDate.setDate(newDate.getDate() + i);
+
+                            visits += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+                            hits += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+                            views += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+
+                            chartData.push({
+                                date: newDate,
+                                visits: visits,
+                                hits: hits,
+                                views: views
+                            });
+                            console.log(chartData)
+                        }
+                        return chartData;
+                    }
+
+                    function zoomChart(){
+                        chart.zoomToIndexes(chart.dataProvider.length - 20, chart.dataProvider.length - 1);
+                    }
+                }
+            ]
+        )
+
+    }
+)
+();
+
                    // let data_test = await fetchDataFactory.getNewNames();
                    // console.log(data_test)
-
+/*
                     $scope.names = await fetchDataFactory.getAllNames();
 
                     let anlage_one_efficiency= await fetchDataFactory.fetchEfficiencyArray('1d8a69a5-b692-47b7-aacb-b7f26692c0ec', 0);
                     let anlage_two_efficiency = await fetchDataFactory.fetchEfficiencyArray('6b423e19-9f02-4374-8391-5075a57ecfdc',0);
 
-                    let anlage_one_power = await fetchDataFactory.fetchElectricalPowerArray('1d8a69a5-b692-47b7-aacb-b7f26692c0ec');
                     let anlage_two_power = await fetchDataFactory.fetchElectricalPowerArray('6b423e19-9f02-4374-8391-5075a57ecfdc');
 
 
                     let anlage_one_geopower = await fetchDataFactory.fetchGeothermalPowerArray('1d8a69a5-b692-47b7-aacb-b7f26692c0ec');
                     let anlage_two_geopower = await fetchDataFactory.fetchGeothermalPowerArray('6b423e19-9f02-4374-8391-5075a57ecfdc');
 
-
-                    $scope.updateChart = async function () {
-                        let data = await fetchDataFactory.getProperties(file, $scope.prop1, $scope.prop2, 24);
-                        console.log(data);
-                        line = makeLineChart($scope.prop1, $scope.prop2, data);
-                    };
+*/
 
                     // List of values for the drop-down menu
-                    /**
-                     * todo:    filter properties. does not make sense to have depth, id, name and temperature in it
-                     */
+
+                    /*
                     $scope.values = Property;
 
                     // Default values for the drop-down menu
@@ -45,6 +155,13 @@
                     names.forEach(function (name) {
                         charts.push(makeLineChart($scope.prop1, $scope.prop2, data, name));
                     });
+
+                    $scope.updateChart = async function () {
+                        let data = await fetchDataFactory.getProperties(file, $scope.prop1, $scope.prop2, 24);
+                        console.log(data);
+                        line = makeLineChart($scope.prop1, $scope.prop2, data);
+                    };
+
 
                     charts.forEach(function (chart) {
                         chart.addListener("rendered", zoomChart(chart));
@@ -136,8 +253,7 @@
                     function zoomChart(chart) {
                         chart.zoomToIndexes(chart.dataProvider.length - 40, chart.dataProvider.length - 1);
                     }
-
-                }])
+                    */
 
 
                     /*
@@ -387,4 +503,3 @@
                     } );
 
                     */
-                })();
