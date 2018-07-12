@@ -17,6 +17,14 @@
                     return colorArray[Math.floor(Math.random()*colorArray.length)];
                 },
 
+                getWarningColor: function(){
+                    return "#FF0000";
+                },
+
+                getWorkingColor: function(){
+                    return "#00FF00";
+                },
+
                 getDepthColor: function(){
                     return "#7a5230";
                 },
@@ -55,10 +63,6 @@
 
                 getGeothermalPowerColor: function(){
                     return "#998ec3";
-                },
-
-                getWarningColor: function () {
-                    return baConfig.colors.danger;
                 },
 
                 getTextColor: function () {
