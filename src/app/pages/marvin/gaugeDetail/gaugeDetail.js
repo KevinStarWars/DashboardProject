@@ -7,9 +7,13 @@
                     async function GaugeDetailCtrl($scope, baConfig, fdf, layoutPaths, commonFunctions) {
 
                         // TODO: Change random values to sinus curve
-
-                        console.log("selected: " + $scope.selectedPlant);
-                        let values = await fdf.fetchElectricalPowerArray($scope.selectedPlant);
+                        let plant = "";
+                        if ($scope.selectedPlantOne === undefined){
+                            plant = "1d8a69a5-b692-47b7-aacb-b7f26692c0ec";
+                        } else {
+                            plant = $scope.selectedPlantOne;
+                        }
+                        let values = await fdf.fetchElectricalPowerArray(plant);
                         let maxValue = Math.max(...values);
 
                         let chart = makeGauge(Math.round(maxValue));
@@ -19,7 +23,7 @@
 
                         // Broadcast listener, called when the selected plant is changed
                         $scope.$on('plant_changed', async function() {
-                            values = await fdf.fetchElectricalPowerArray($scope.selectedPlant);
+                            values = await fdf.fetchElectricalPowerArray(plant);
                             maxValue = Math.max(...values);
                             chart = makeGauge(Math.round(maxValue));
                         });

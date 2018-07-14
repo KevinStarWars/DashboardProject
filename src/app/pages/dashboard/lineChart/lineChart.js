@@ -7,7 +7,6 @@
                     async function DshbrdLineChartCtrl($scope, baConfig, fetchDataFactory, layoutPaths, commonFunctions) {
                 let downSampleRate = 500;
                 let allData = await fetchDataFactory.fetchTimeStepAllEfficiencies(downSampleRate);
-                console.log(allData);
                 let graphs = [];
                 let categories = await fetchDataFactory.getAllCategories();
                 $scope.categories = [];
@@ -98,6 +97,8 @@
                         }
                     ],
                 });
+
+
 
 
                 lineChart.addListener('rendered', zoomChart);

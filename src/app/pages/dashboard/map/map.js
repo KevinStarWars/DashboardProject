@@ -90,7 +90,8 @@
                                 infoWindow.close();
                             });
                             marker.addListener('click', function () {
-                                let locationString = 'http://localhost:3000/#/' + value['id'];
+                                let locationString = 'http://localhost:3000/#/detailView/' + value['name'];
+                                console.log(locationString);
                                 window.open(locationString, '_self');
                             })
                         });
@@ -158,7 +159,7 @@
                                     infoWindow.close();
                                 });
                                 marker.addListener('click', function () {
-                                    let locationString = 'http://localhost:3000/#/' + value['name'];
+                                    let locationString = 'http://localhost:3000/#/detailView/' + value['name'];
                                     window.open(locationString, '_self');
                                 })
                             } else {
@@ -184,7 +185,7 @@
                                     infoWindow.close();
                                 });
                                 marker.addListener('click', function () {
-                                    let locationString = 'http://localhost:3000/#/' + value['name'];
+                                    let locationString = 'http://localhost:3000/#/detailView/' + value['name'];
                                     window.open(locationString, '_self');
                                 })
                             }
@@ -224,7 +225,8 @@
                                 infoWindow.close();
                             });
                             marker.addListener('click', function () {
-                                let locationString = 'http://localhost:3000/#/' + value['id'];
+                                let locationString = 'localhost:3000/#/detailView/' + value['name'];
+                                console.log(value);
                                 window.open(locationString, '_self');
                             })
                         });

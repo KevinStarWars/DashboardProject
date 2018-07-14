@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('Geothermal.pages.khristina', ['Geothermal.pages.kevin'])
+    angular.module('Geothermal.pages.khristina', ['Geothermal.pages.kevin', 'Geothermal.pages.dashboard'])
         .config(routeConfig);
 
     /** @ngInject */
@@ -14,14 +14,6 @@
                 sidebarMeta: {
                     order: 800,
                 },
-            })
-            .state('khristina.id', {
-                url: '/khristina/{plantId}',
-                templateUrl: 'app/pages/khristina/khristina.html',
-                controller: function ($stateParams) {
-                    console.log($stateParams);
-                    $scope.selectedPlant = $stateParams.plantId;
-                }
             });
     }
 

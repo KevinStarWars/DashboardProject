@@ -6,24 +6,7 @@
                 ['$scope', 'baConfig', 'fetchDataFactory', 'layoutPaths', 'commonFunctions',
                     async function LineChartTwoCtrl($scope, baConfig, fetchDataFactory, layoutPaths, commonFunctions) {
 
-                        // List of relevant Properties
-                        $scope.properties = {
-                            EFFICIENCY:         "efficiency",
-                            ELECTRICAL_POWER:   "electrical_power",
-                            EXTRACTION_RATE:    "extraction_rate",
-                            GEOTHERMAL_POWER:   "geothermal_power",
-                        };
-
-                        // Default value for the drop-down menu
-                        $scope.selectedProperty = Property.EFFICIENCY;
-                        $scope.selectedPlant = '1d8a69a5-b692-47b7-aacb-b7f26692c0ec';
-
-                        let test_data = fetchDataFactory.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
-                        console.log(test_data);
-
-
-                        let data = await fetchDataFactory.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
-                        console.log(data);
+                        let data = await fetchDataFactory.getProperties($scope.selectedPlantTwo, Property.TIME_STEP, $scope.selectedProperty, 24);
 
                         let line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
                         zoomChart();
@@ -31,25 +14,21 @@
                         document.getElementById('line-chart-panel').style.display = 'inline';
 
                         // Broadcast listener, called when the selected plant is changed
-                        $scope.$on('plant_changed', async function() {
-                            data = await fetchDataFactory.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
+                        $scope.$on('plant_changed_two', async function() {
+                            console.log($scope.selectedPlantTwo);
+                            data = await fetchDataFactory.getProperties($scope.selectedPlantTwo, Property.TIME_STEP, $scope.selectedProperty, 24);
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
                             zoomChart()
                         });
 
-                        // Called when the selected property is changed
-                        $scope.updateChart = async function (element) {
-                            $scope.selectedProperty = element.p;
-                            data = await fetchDataFactory.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
+                        $scope.$on('propertyChanged', async function () {
+                            data = await fetchDataFactory.getProperties($scope.selectedPlantTwo, Property.TIME_STEP, $scope.selectedProperty, 24);
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
                             zoomChart();
-                            document.getElementById("selected-property").nodeValue = element.p;
-                        };
+                        });
 
                         // Make a line chart. Value and category are the properties to be plotted
                         function makeLineChart(category, value, data) {
-                            console.log("makeLineChart: " + category + " | " + value + " (" + data.length + ")");
-                            console.log(data);
                             return AmCharts.makeChart("line-chart-div2", {
                                 "type": "serial",
                                 "theme": "light",
@@ -86,11 +65,7 @@
                                     "lineColor": "#248837",
                                     "type": "smoothedLine",
                                     "useLineColorForBulletBorder": true,
-                                    "valueField": value,
-                                    "balloonFunction": function (item) {
-                                        return getBalloonText(item);
-                                    },
-                                    //"balloonText": "<span style='font-size:18px;'>[[Math.round(value)]]</span>"
+                                    "valueField": value
                                 }],
                                 "chartScrollbar": {
                                     "graph": "g1",
@@ -144,18 +119,11 @@
                             line.zoomToIndexes(line.dataProvider.length - 40, line.dataProvider.length - 1);
                         }
                         $scope.changePlant = async function (element) {
-                            $scope.selectedPlant = element.name;
-                            document.getElementById("selected").nodeValue = element.name;
+                            $scope.selectedPlantTwo = element.name;
 
                             // Broadcast change to child controllers
                             $scope.$broadcast('plant_changed');
                         };
-
-                        $scope.powerplants = await fetchDataFactory.getAllNames();
-                        console.log("powerplants " + $scope.powerplants);
-                        $scope.selectedPlant = $scope.powerplants[0];
-                        console.log("selected main " + $scope.selectedPlant);
-
                     }
                 ]
             )

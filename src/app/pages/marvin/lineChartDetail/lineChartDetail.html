@@ -1,16 +1,38 @@
 <div id="line-chart-detail-div" ng-app="Geothermal" ng-controller="LineChartDetailCtrl">
 
-    <div id="drop-down" class="btn-group" uib-dropdown dropdown-append-to-body>
-        <button id="dropdown-property" type="button" class="btn btn-default" uib-dropdown-toggle>
-            <span id="selected-property">{{selectedProperty.replace("_", " ").toUpperCase()}}</span><span class="caret"></span>
-        </button>
-        <ul uib-dropdown-menu>
-            <li><a class="dropdown-item" ng-repeat="p in properties" ng-model="name" ng-click="updateChart(this)">{{p.replace("_", " ").toUpperCase()}}</a></li>
-        </ul>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <span>Choose your Property: </span>
+            <div id="drop-down" class="btn-group" uib-dropdown dropdown-append-to-body>
+                <button id="dropdown-property" type="button" class="btn btn-default" uib-dropdown-toggle>
+                    <span id="selected-property">{{selectedProperty.replace("_", " ").toUpperCase()}}</span><span class="caret"></span>
+                </button>
+                <ul uib-dropdown-menu>
+                    <li><a class="dropdown-item" ng-repeat="p in properties" ng-model="name" ng-click="updateChart(this)">{{p.replace("_", " ").toUpperCase()}}</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-3 col-sm-3 pull-right">
+            <label>From date: </label>
+            <p class="input-group">
+                <input id="date-from-picker" type="text" class="form-control" uib-datepicker-popup="{{format}}" datepicker-options="optionsFrom" ng-model="dateFrom" is-open="openedFrom"  ng-change="fromChanged()" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openFrom()"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+        </div>
+
+        <div class="col-md-3 col-lg-3 col-sm-3 pull-right">
+            <label>To date: </label>
+            <p class="input-group">
+                <input id="date-to-picker" type="text" class="form-control" uib-datepicker-popup="{{format}}" datepicker-options="optionsTo" ng-model="dateTo" is-open="openedTo" ng-change="toChanged()" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openTo()"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+        </div>
     </div>
 
     <div class="row">
-        <div class="col-lg-9">
+        <div class="col-lg-12 col-md-12 col-sm-12">
             <div id="line-chart-div" class="dashboard-chart">
 
             </div>

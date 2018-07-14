@@ -6,6 +6,13 @@
                 ['$scope', 'baConfig', 'fetchDataFactory', 'layoutPaths', 'commonFunctions',
                     async function LineChartDetailCtrl($scope, baConfig, fdf, layoutPaths, commonFunctions) {
 
+                        let plant = "";
+                        if ($scope.selectedPlantTwo === undefined){
+                            plant = "1d8a69a5-b692-47b7-aacb-b7f26692c0ec";
+                        } else {
+                            plant = $scope.selectedPlantTwo;
+                        }
+
                         // List of relevant Properties
                         $scope.properties = {
                             EFFICIENCY:         "efficiency",
@@ -17,32 +24,42 @@
                         // Default value for the drop-down menu
                         $scope.selectedProperty = Property.EFFICIENCY;
 
-                        let data = await fdf.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
+                        let data = await fdf.getProperties(plant, Property.TIME_STEP, $scope.selectedProperty, 24);
+                        $scope.dateFrom = getDateObjectFromString(data[0][Property.TIME_STEP]);
+                        $scope.dateTo = getDateObjectFromString(data[data.length -1][Property.TIME_STEP]) -1;
+
                         let line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
-                        zoomChart();
+                        line.addListener('rendered', zoomChart);
 
                         document.getElementById('line-chart-panel').style.display = 'inline';
 
                         // Broadcast listener, called when the selected plant is changed
                         $scope.$on('plant_changed', async function() {
-                            data = await fdf.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
+                            if ($scope.selectedPlantTwo === undefined){
+                                plant = "1d8a69a5-b692-47b7-aacb-b7f26692c0ec";
+                            } else {
+                                plant = $scope.selectedPlantTwo;
+                            }
+                            data = await fdf.getProperties(plant, Property.TIME_STEP, $scope.selectedProperty, 24);
+                            $scope.dateFrom = getDateObjectFromString(data[0][Property.TIME_STEP]);
+                            $scope.dateTo = getDateObjectFromString(data[data.length -1][Property.TIME_STEP]) -1;
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
-                            zoomChart()
                         });
 
                         // Called when the selected property is changed
                         $scope.updateChart = async function (element) {
+                            if ($scope.selectedPlantTwo === undefined){
+                                plant = "1d8a69a5-b692-47b7-aacb-b7f26692c0ec";
+                            } else {
+                                plant = $scope.selectedPlantTwo;
+                            }
                             $scope.selectedProperty = element.p;
-                            data = await fdf.getProperties($scope.selectedPlant, Property.TIME_STEP, $scope.selectedProperty, 24);
+                            data = await fdf.getProperties(plant, Property.TIME_STEP, $scope.selectedProperty, 24);
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
-                            zoomChart();
-                            document.getElementById("selected-property").nodeValue = element.p;
                         };
 
                         // Make a line chart. Value and category are the properties to be plotted
                         function makeLineChart(category, value, data) {
-                            console.log("makeLineChart: " + category + " | " + value + " (" + data.length + ")");
-                            console.log(data);
                             return AmCharts.makeChart("line-chart-div", {
                                 "type": "serial",
                                 "theme": "light",
@@ -142,11 +159,72 @@
                                     unit = "l/min";
                                     break;
                             }
-                            return "<b>" + Math.round(item.values.value) + " " + unit + "</b>";
+                            return `<b>${Math.round(item.values.value)} ${unit}</b>`;
                         }
 
                         function zoomChart() {
-                            line.zoomToIndexes(line.dataProvider.length - 40, line.dataProvider.length - 1);
+                            if ($scope.dateTo === "" || $scope.dateFrom === ""){
+                                line.zoomToIndexes(line.dataProvider.length - 40, line.dataProvider.length - 1);
+                            } else {
+                                line.zoom($scope.dateTo, $scope.dateFrom);
+                            }
+                        }
+
+                        $scope.format = 'yyyy-MM-dd';
+
+                        $scope.openFrom = openFrom;
+                        $scope.openedFrom = false;
+                        $scope.optionsFrom = {
+                            showWeeks: false,
+                            defaultViewDate: $scope.dateFrom,
+                            endDate: $scope.dateTo,
+                            startDate: $scope.dateFrom
+                        };
+
+                        function openFrom() {
+                            $scope.openedFrom = true;
+                        }
+
+                        $scope.openTo = openTo;
+                        $scope.openedTo = false;
+                        $scope.optionsTo = {
+                            showWeeks: false,
+                            defaultViewDate: $scope.dateTo,
+                            endDate: $scope.dateTo,
+                            startDate: $scope.dateFrom
+                        };
+
+                        function openTo() {
+                            $scope.openedTo = true;
+                        }
+
+                        $scope.toChanged = function toChanged(){
+                            if ($scope.dateFrom !== ""){
+                                line.zoom($scope.dateFrom, $scope.dateTo);
+                            }
+                        };
+
+                        $scope.fromChanged = function fromChanged() {
+                            if ($scope.dateTo  !== ""){
+                                line.zoom($scope.dateFrom, $scope.dateTo);
+                            }
+                        };
+
+                        /**
+                         * YYYY-MM-DD
+                         */
+                        function getDateObjectFromString(dateString){
+                            let returnObject = {
+                                day: "",
+                                month: "",
+                                year: ""
+                            };
+
+                            returnObject.year = dateString.substring(0, dateString.indexOf("-"));
+                            returnObject.month = dateString.substring(dateString.indexOf("-"), dateString.split('-', 2).join("-").length);
+                            returnObject.day= dateString.substring(dateString.split('-', 2).join("-").length, dateString.length-1);
+
+                            return new Date(returnObject.year, returnObject.month-1, returnObject.day);
                         }
 
                     }

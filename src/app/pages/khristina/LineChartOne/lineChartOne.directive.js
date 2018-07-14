@@ -9,7 +9,7 @@
         return {
             restrict: 'E',
             controller: 'LineChartOneCtrl',
-            templateUrl: 'app/pages/khristina/lineChartOne/lineChartOne.html'
+            templateUrl: 'app/pages/khristina/LineChartOne/lineChartOne.html'
         };
     }
 })();
