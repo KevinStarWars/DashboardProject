@@ -96,7 +96,7 @@
                                 dataProvider.push({
                                     geothermal: item[0],
                                     depth: parseFloat(item[1]),
-                                    color: commonFunctions.getRandomColor()
+                                    color: commonFunctions.getDepthColor()
                                 });
                                 barChart.validateData();
                             }

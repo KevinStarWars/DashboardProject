@@ -4,7 +4,7 @@
 
         <!-- Drop-down menu to select the property -->
         <div class="col-lg-3 col-md-3 col-sm-3">
-            <span>Choose your Property: </span>
+            <span><h3>Choose your Property: </h3></span>
             <div id="drop-down" class="btn-group" uib-dropdown dropdown-append-to-body>
                 <button id="dropdown-property" type="button" class="btn btn-default" uib-dropdown-toggle>
                     <span id="selected-property">{{selectedProperty.replace("_", " ").toUpperCase()}}</span><span class="caret"></span>
@@ -17,7 +17,7 @@
 
         <!-- Calendar to choose the last date to display -->
         <div class="col-md-3 col-lg-3 col-sm-3 pull-right">
-            <label>To date: </label>
+            <label><h3>To date: </h3></label>
             <p class="input-group">
                 <input id="date-to-picker" type="text" class="form-control" uib-datepicker-popup="{{format}}" datepicker-options="optionsTo" ng-model="dateTo" is-open="openedTo" ng-change="toChanged()" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" />
                 <span class="input-group-btn">
@@ -27,7 +27,7 @@
 
         <!-- Calendar to choose the first date to display -->
         <div class="col-md-3 col-lg-3 col-sm-3 pull-right">
-            <label>From date: </label>
+            <label><h3>From date: </h3></label>
             <p class="input-group">
                 <input id="date-from-picker" type="text" class="form-control" uib-datepicker-popup="{{format}}" datepicker-options="optionsFrom" ng-model="dateFrom" is-open="openedFrom"  ng-change="fromChanged()" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" />
                 <span class="input-group-btn">

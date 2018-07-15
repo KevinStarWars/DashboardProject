@@ -23,7 +23,9 @@
                         plants.forEach(function (item) {
                             graphs.push({
                                 id: i,
-                                balloonText: '',
+                                "balloonFunction": function (item) {
+                                    return getBalloonText(item);
+                                },
                                 bullet: 'round',
                                 bulletSize: 8,
                                 lineColor: item['color'],
@@ -124,6 +126,32 @@
                         $scope.$on('lineChartTwoZoomedIteration', function (event, args) {
                             lineChart.zoom(args.startDate, args.endDate);
                         });
+
+                        function getBalloonText(item) {
+                            let unit = "";
+                            let value = item.values.value;
+
+                            switch ($scope.selectedProperty) {
+                                case Property.EFFICIENCY:
+                                    unit = "%";
+                                    value = parseFloat((value * 100).toFixed(2));
+                                    break;
+                                case Property.ELECTRICAL_POWER:
+                                    unit = "kW/h";
+                                    value = Math.round(value).toLocaleString('en-us');
+                                    break;
+                                case Property.GEOTHERMAL_POWER:
+                                    unit = "kW/h";
+                                    value = Math.round(value).toLocaleString('en-us');
+                                    break;
+                                case Property.EXTRACTION_RATE:
+                                    unit = "m³/h";
+                                    value = Math.round(value).toLocaleString('en-us');
+                                    break;
+                            }
+
+                            return `<b>${value} ${unit}</b>`;
+                        }
                     }
                 ]
             )

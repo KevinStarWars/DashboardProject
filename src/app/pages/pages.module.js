@@ -5,8 +5,8 @@
     "ui.router",
 
     "Geothermal.pages.dashboard",
-      "Geothermal.pages.khristina",
       "Geothermal.pages.marvin",
+      "Geothermal.pages.khristina",
   ])
       .config(routeConfig);
 

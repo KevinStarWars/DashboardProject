@@ -10,7 +10,7 @@
             .state('khristina', {
                 url: '/khristina',
                 templateUrl: 'app/pages/khristina/khristina.html',
-                title: 'Geothermie Analyzer',
+                title: 'Compare Plants',
                 sidebarMeta: {
                     order: 800,
                 },

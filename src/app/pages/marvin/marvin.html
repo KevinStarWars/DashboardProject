@@ -7,6 +7,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="panel animated">
                     <div class="panel-body">
+                        <h3>Choose The Geothermal Plant You Want To Monitor</h3>
                         <div id="drop-down" class="btn-group" style="width: 100%" uib-dropdown dropdown-append-to-body>
                             <button id="dropdown" type="button" class="btn btn-default" style="width: 100%" uib-dropdown-toggle>
                                 <span id="selected" data-selected="{{selectedPlant}}">{{selectedPlant}}</span><span class="caret"></span>
@@ -38,7 +39,6 @@
             <div id="gauge-panel" class="col-lg-6 col-md-6 col-sm-6"
                  ba-panel
                  ba-panel-title="Gauge"
-                 ba-panel-class="with-scroll"
 
                  style="display: none">
                 <gauge-detail></gauge-detail>
@@ -50,7 +50,6 @@
     <div id="line-chart-panel" class="col-lg-12"
          ba-panel
          ba-panel-title="Line Chart"
-         ba-panel-class="with-scroll"
          style="display: none">
         <line-chart-detail></line-chart-detail>
     </div>

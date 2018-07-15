@@ -55,7 +55,9 @@
                                 },
                                 "graphs": [{
                                     "id": "g1",
-                                    "balloonText": "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
+                                    "balloonFunction": function (item) {
+                                        return getBalloonText(item);
+                                    },
                                     "balloon":{
                                         "drop":true,
                                         "adjustBorderColor":false,
@@ -126,6 +128,32 @@
                                         endDate: line.endDate
                                     });
                             });
+                        }
+
+                        function getBalloonText(item) {
+                            let unit = "";
+                            let value = item.values.value;
+
+                            switch ($scope.selectedProperty) {
+                                case Property.EFFICIENCY:
+                                    unit = "%";
+                                    value = parseFloat((value * 100).toFixed(2));
+                                    break;
+                                case Property.ELECTRICAL_POWER:
+                                    unit = "kW/h";
+                                    value = Math.round(value).toLocaleString('en-us');
+                                    break;
+                                case Property.GEOTHERMAL_POWER:
+                                    unit = "kW/h";
+                                    value = Math.round(value).toLocaleString('en-us');
+                                    break;
+                                case Property.EXTRACTION_RATE:
+                                    unit = "m³/h";
+                                    value = Math.round(value).toLocaleString('en-us');
+                                    break;
+                            }
+
+                            return `<b>${value} ${unit}</b>`;
                         }
                     }
                 ]

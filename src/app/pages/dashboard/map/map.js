@@ -81,7 +81,7 @@
                             );
                             allMarkers.push(marker);
                             let infoWindow = new google.maps.InfoWindow({
-                                content: value['id']
+                                content: value['name']
                             });
                             marker.addListener('mouseover', function () {
                                 infoWindow.open(map, this);
