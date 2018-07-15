@@ -36,7 +36,6 @@
                     };
 
                     $scope.$on('lineChartOneZoomed', function (event, args) {
-                        console.log('lineChartOneZoomed');
                         $scope.$broadcast('lineChartOneZoomedIteration', args);
                     });
 

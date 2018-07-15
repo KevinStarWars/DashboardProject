@@ -132,7 +132,6 @@
                     document.getElementById('lineChart').style.visibility = 'hidden';
                     document.getElementById('dropdown').childNodes[0].nodeValue = element.category.replace("_", " ").toUpperCase();
                     let dataProvider = await fetchDataFactory.fetchTimeStepAllProperty(downSampleRate, element.category);
-                    console.log(dataProvider);
                     lineChart.dataProvider = dataProvider;
                     for (let i = 0; i < $scope.names.length; i++){
                         lineChart.graphs[i].negativeBase  = dataProvider[0][$scope.names[i][Property.NAME]]*0.7;

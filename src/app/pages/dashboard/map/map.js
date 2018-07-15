@@ -226,7 +226,6 @@
                             });
                             marker.addListener('click', function () {
                                 let locationString = 'localhost:3000/#/detailView/' + value['name'];
-                                console.log(value);
                                 window.open(locationString, '_self');
                             })
                         });
