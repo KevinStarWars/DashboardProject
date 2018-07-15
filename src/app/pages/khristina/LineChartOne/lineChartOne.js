@@ -6,42 +6,35 @@
                 ['$scope', 'baConfig', 'fetchDataFactory', 'layoutPaths', 'commonFunctions',
                     async function LineChartOneCtrl($scope, baConfig, fetchDataFactory, layoutPaths, commonFunctions) {
 
-                        let downsampleRate = 500;
+                        let downSampleRate = 500;
 
-                        // List of relevant Properties
-                        $scope.properties = {
-                            EFFICIENCY:         "efficiency",
-                            ELECTRICAL_POWER:   "electrical_power",
-                            EXTRACTION_RATE:    "extraction_rate",
-                            GEOTHERMAL_POWER:   "geothermal_power",
-                        };
-
-                        let data = await fetchDataFactory.getProperties($scope.selectedPlantOne, Property.TIME_STEP, $scope.selectedProperty, downsampleRate);
+                        let data = await fetchDataFactory.getProperties($scope.selectedPlantOne, Property.TIME_STEP, $scope.selectedProperty, downSampleRate);
 
                         let line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
-                        zoomChart();
+                        addZoomListener(line);
 
                         document.getElementById('line-chart-panel').style.display = 'inline';
 
                         // Broadcast listener, called when the selected plant is changed
                         $scope.$on('plant_changed_one', async function() {
-                            data = await fetchDataFactory.getProperties($scope.selectedPlantOne, Property.TIME_STEP, $scope.selectedProperty, downsampleRate);
+                            data = await fetchDataFactory.getProperties($scope.selectedPlantOne, Property.TIME_STEP, $scope.selectedProperty, downSampleRate);
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
-                            zoomChart();
+                            addZoomListener(line);
                         });
 
 
                         $scope.$on('propertyChanged', async function () {
-                            data = await fetchDataFactory.getProperties($scope.selectedPlantOne, Property.TIME_STEP, $scope.selectedProperty, downsampleRate);
+                            data = await fetchDataFactory.getProperties($scope.selectedPlantOne, Property.TIME_STEP, $scope.selectedProperty, downSampleRate);
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
-                            zoomChart();
+                            addZoomListener(line);
                         });
+
 
                         // Make a line chart. Value and category are the properties to be plotted
                         function makeLineChart(category, value, data) {
                             return AmCharts.makeChart("line-chart-div", {
                                 "type": "serial",
-                                "theme": "light",
+                                "theme": "blur",
                                 "marginRight": 40,
                                 "marginLeft": 40,
                                 "autoMarginOffset": 20,
@@ -51,7 +44,8 @@
                                     "id": "v1",
                                     "axisAlpha": 0,
                                     "position": "left",
-                                    "ignoreAxisWidth":true
+                                    "ignoreAxisWidth":true,
+                                    useScientificNotation: true,
                                 }],
                                 "balloon": {
                                     "borderThickness": 3,
@@ -97,14 +91,11 @@
                                 },
                                 "chartCursor": {
                                     "categoryBalloonDateFormat": "YYYY",
-                                    "pan": true,
                                     "valueLineEnabled": true,
                                     "valueLineBalloonEnabled": true,
-                                    "cursorAlpha":1,
-                                    "cursorColor":"#258cbb",
-                                    "limitToGraph":"g1",
-                                    "valueLineAlpha":0.2,
-                                    "valueZoomable":true
+                                    "cursorAlpha":0,
+                                    "valueLineAlpha":0.5,
+                                    fullWidth: true
                                 },
                                 "valueScrollbar":{
                                     "oppositeAxis":false,
@@ -125,8 +116,14 @@
                             });
                         }
 
-                        function zoomChart() {
-                            line.zoomToIndexes(line.dataProvider.length - 40, line.dataProvider.length - 1);
+                        function addZoomListener(line){
+                            line.addListener('zoomed', function () {
+                                $scope.$emit('lineChartOneZoomed',
+                                    {
+                                        startDate: line.startDate,
+                                        endDate: line.endDate
+                                    });
+                            });
                         }
                     }
                 ]

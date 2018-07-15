@@ -98,9 +98,6 @@
                     ],
                 });
 
-
-
-
                 lineChart.addListener('rendered', zoomChart);
                 if (lineChart.zoomChart) {
                     lineChart.zoomChart();
@@ -119,7 +116,6 @@
                 }
 
                 $scope.removeData = function(element) {
-                    console.log(element.name['name']);
                     let graphs = lineChart.graphs;
                     graphs.forEach(function (graph) {
                         if (graph.id === element.name['name']){

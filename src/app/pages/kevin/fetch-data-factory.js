@@ -363,6 +363,18 @@ let TWELVE_HOURS = 12 * 60 * 60 * 1000;
                             last: item[item.length-1]})
                     });
                     return dataSet;
+                },
+
+                getUnit: function(property){
+                    if (property === Property.ELECTRICAL_POWER){
+                        return "kWh";
+                    } else if (property === Property.EFFICIENCY) {
+                        return "";
+                    } else if (property === Property.EXTRACTION_RATE){
+                        return "m³/h"
+                    } else if (property === Property.GEOTHERMAL_POWER){
+                        return "kWh";
+                    }
                 }
             }
         }]);

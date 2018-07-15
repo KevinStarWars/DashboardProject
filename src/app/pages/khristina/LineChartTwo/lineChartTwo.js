@@ -6,32 +6,37 @@
                 ['$scope', 'baConfig', 'fetchDataFactory', 'layoutPaths', 'commonFunctions',
                     async function LineChartTwoCtrl($scope, baConfig, fetchDataFactory, layoutPaths, commonFunctions) {
 
-                        let data = await fetchDataFactory.getProperties($scope.selectedPlantTwo, Property.TIME_STEP, $scope.selectedProperty, 24);
-
+                        let downSampleRate = 500;
+                        let data = await fetchDataFactory.getProperties($scope.selectedPlantTwo, Property.TIME_STEP, $scope.selectedProperty, downSampleRate);
                         let line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
-                        zoomChart();
+
+                        addZoomListener(line);
 
                         document.getElementById('line-chart-panel').style.display = 'inline';
 
                         // Broadcast listener, called when the selected plant is changed
                         $scope.$on('plant_changed_two', async function() {
-                            console.log($scope.selectedPlantTwo);
-                            data = await fetchDataFactory.getProperties($scope.selectedPlantTwo, Property.TIME_STEP, $scope.selectedProperty, 24);
+                            data = await fetchDataFactory.getProperties($scope.selectedPlantTwo, Property.TIME_STEP, $scope.selectedProperty, downSampleRate);
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
-                            zoomChart()
+                            addZoomListener(line);
                         });
 
                         $scope.$on('propertyChanged', async function () {
-                            data = await fetchDataFactory.getProperties($scope.selectedPlantTwo, Property.TIME_STEP, $scope.selectedProperty, 24);
+                            data = await fetchDataFactory.getProperties($scope.selectedPlantTwo, Property.TIME_STEP, $scope.selectedProperty, downSampleRate);
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
-                            zoomChart();
+                            addZoomListener(line);
                         });
+
+                        $scope.changePlant = async function (element) {
+                            $scope.selectedPlantTwo = element.name;
+                            $scope.$broadcast('plant_changed');
+                        };
 
                         // Make a line chart. Value and category are the properties to be plotted
                         function makeLineChart(category, value, data) {
                             return AmCharts.makeChart("line-chart-div2", {
                                 "type": "serial",
-                                "theme": "light",
+                                "theme": "blur",
                                 "marginRight": 40,
                                 "marginLeft": 40,
                                 "autoMarginOffset": 20,
@@ -41,7 +46,8 @@
                                     "id": "v1",
                                     "axisAlpha": 0,
                                     "position": "left",
-                                    "ignoreAxisWidth":true
+                                    "ignoreAxisWidth":true,
+                                    useScientificNotation: true,
                                 }],
                                 "balloon": {
                                     "borderThickness": 3,
@@ -87,14 +93,11 @@
                                 },
                                 "chartCursor": {
                                     "categoryBalloonDateFormat": "YYYY",
-                                    "pan": true,
                                     "valueLineEnabled": true,
                                     "valueLineBalloonEnabled": true,
-                                    "cursorAlpha":1,
-                                    "cursorColor":"#258cbb",
-                                    "limitToGraph":"g1",
-                                    "valueLineAlpha":0.2,
-                                    "valueZoomable":true
+                                    "cursorAlpha":0,
+                                    "valueLineAlpha":0.5,
+                                    fullWidth: true
                                 },
                                 "valueScrollbar":{
                                     "oppositeAxis":false,
@@ -115,15 +118,15 @@
                             });
                         }
 
-                        function zoomChart() {
-                            line.zoomToIndexes(line.dataProvider.length - 40, line.dataProvider.length - 1);
+                        function addZoomListener(line){
+                            line.addListener('zoomed', function () {
+                                $scope.$emit('lineChartTwoZoomed',
+                                    {
+                                        startDate: line.startDate,
+                                        endDate: line.endDate
+                                    });
+                            });
                         }
-                        $scope.changePlant = async function (element) {
-                            $scope.selectedPlantTwo = element.name;
-
-                            // Broadcast change to child controllers
-                            $scope.$broadcast('plant_changed');
-                        };
                     }
                 ]
             )

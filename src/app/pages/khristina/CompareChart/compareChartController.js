@@ -11,18 +11,18 @@
 
                         let plants = [];
                         plants.push({
-                            name: '1d8a69a5-b692-47b7-aacb-b7f26692c0ec',
-                            color: '#8c510a'
+                            name: $scope.selectedPlantOne,
+                            color: "#d1655d"
                         });
                         plants.push({
-                            name: '1d8a69a5-b692-47b7-aacb-b7f26692c0ec',
-                            color: '#01665e'
+                            name: $scope.selectedPlantTwo,
+                            color: "#248837"
                         });
 
-                        let i = 0;
+                        let i = 1;
                         plants.forEach(function (item) {
                             graphs.push({
-                                id: item['name'],
+                                id: i,
                                 balloonText: '',
                                 bullet: 'round',
                                 bulletSize: 8,
@@ -31,7 +31,6 @@
                                 negativeLineColor: commonFunctions.getWarningColor(),
                                 type: 'smoothedLine',
                                 valueField: item['name'],
-                                negativeBase: allData[0][item['name']]  * 0.75,
                                 negativeFillAlphas: 1,
                             });
                             i++;
@@ -50,6 +49,8 @@
                                     position: 'left',
                                     gridAlpha: 0.5,
                                     gridColor: commonFunctions.getBorderColor(),
+                                    useScientificNotation: true,
+                                    unit: fetchDataFactory.getUnit($scope.selectedProperty)
                                 }
                             ],
                             graphs: graphs,
@@ -92,10 +93,38 @@
                             creditsPosition: 'bottom-right',
                             pathToImages: layoutPaths.images.amChart,
                         });
-                        lineChart.addListener("clickGraphItem", function (event) {
-                            console.log(event);
+
+                        $scope.$on('plant_changed_two', async function() {
+                            for (let i = 0; i < lineChart.graphs.length; i++){
+                                if (lineChart.graphs[i].id === 2){
+                                    lineChart.graphs[i].valueField = $scope.selectedPlantTwo;
+                                }
+                            }
+                            lineChart.validateData();
                         });
 
+                        $scope.$on('plant_changed_one', async function() {
+                            for (let i = 0; i < lineChart.graphs.length; i++){
+                                if (lineChart.graphs[i].id === 1){
+                                    lineChart.graphs[i].valueField = $scope.selectedPlantOne;
+                                }
+                            }
+                            lineChart.validateData();
+                        });
+
+                        $scope.$on('propertyChanged', async function () {
+                            lineChart.dataProvider = await fetchDataFactory.fetchTimeStepAllProperty(downSampleRate, $scope.selectedProperty);
+                            lineChart.validateData();
+                        });
+
+                        $scope.$on('lineChartOneZoomedIteration', function (event, args) {
+                            console.log('hallo');
+                            lineChart.zoom(args.startDate, args.endDate);
+                        });
+
+                        $scope.$on('lineChartTwoZoomedIteration', function (event, args) {
+                            lineChart.zoom(args.startDate, args.endDate);
+                        });
                     }
                 ]
             )
