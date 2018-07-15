@@ -1,6 +1,8 @@
 <div id="line-chart-detail-div" ng-app="Geothermal" ng-controller="LineChartDetailCtrl">
 
     <div class="row">
+
+        <!-- Drop-down menu to select the property -->
         <div class="col-lg-3 col-md-3 col-sm-3">
             <span>Choose your Property: </span>
             <div id="drop-down" class="btn-group" uib-dropdown dropdown-append-to-body>
@@ -12,15 +14,8 @@
                 </ul>
             </div>
         </div>
-        <div class="col-md-3 col-lg-3 col-sm-3 pull-right">
-            <label>From date: </label>
-            <p class="input-group">
-                <input id="date-from-picker" type="text" class="form-control" uib-datepicker-popup="{{format}}" datepicker-options="optionsFrom" ng-model="dateFrom" is-open="openedFrom"  ng-change="fromChanged()" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openFrom()"><i class="glyphicon glyphicon-calendar"></i></button>
-                </span>
-        </div>
 
+        <!-- Calendar to choose the last date to display -->
         <div class="col-md-3 col-lg-3 col-sm-3 pull-right">
             <label>To date: </label>
             <p class="input-group">
@@ -29,8 +24,19 @@
                     <button type="button" class="btn btn-default" ng-click="openTo()"><i class="glyphicon glyphicon-calendar"></i></button>
                 </span>
         </div>
+
+        <!-- Calendar to choose the first date to display -->
+        <div class="col-md-3 col-lg-3 col-sm-3 pull-right">
+            <label>From date: </label>
+            <p class="input-group">
+                <input id="date-from-picker" type="text" class="form-control" uib-datepicker-popup="{{format}}" datepicker-options="optionsFrom" ng-model="dateFrom" is-open="openedFrom"  ng-change="fromChanged()" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openFrom()"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+        </div>
     </div>
 
+    <!-- Container for the line chart -->
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div id="line-chart-div" class="dashboard-chart">

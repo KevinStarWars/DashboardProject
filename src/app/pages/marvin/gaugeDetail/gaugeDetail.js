@@ -6,13 +6,12 @@
                 ['$scope', 'baConfig', 'fetchDataFactory', 'layoutPaths', 'commonFunctions',
                     async function GaugeDetailCtrl($scope, baConfig, fdf, layoutPaths, commonFunctions) {
 
-                        // TODO: Change random values to sinus curve
-                        let plant = "";
-                        if ($scope.selectedPlantOne === undefined){
-                            plant = "1d8a69a5-b692-47b7-aacb-b7f26692c0ec";
-                        } else {
-                            plant = $scope.selectedPlantOne;
+                        // Default plant
+                        let plant = "1d8a69a5-b692-47b7-aacb-b7f26692c0ec";
+                        if ($scope.selectedPlant !== undefined){
+                            plant = $scope.selectedPlant;
                         }
+
                         let values = await fdf.fetchElectricalPowerArray(plant);
                         let maxValue = Math.max(...values);
 
@@ -23,7 +22,8 @@
 
                         // Broadcast listener, called when the selected plant is changed
                         $scope.$on('plant_changed', async function() {
-                            values = await fdf.fetchElectricalPowerArray(plant);
+                            // Recalculate values and redraw gauge
+                            values = await fdf.fetchElectricalPowerArray($scope.selectedPlant);
                             maxValue = Math.max(...values);
                             chart = makeGauge(Math.round(maxValue));
                         });
@@ -73,19 +73,16 @@
                             });
                         }
 
-                        function makePanelVisible(){
+                        function makePanelVisible() {
                             document.getElementById('gauge-panel').style.display = 'inline';
                         }
 
-                        // Generate random values
+                        // Generate random values for the gauge
                         function random() {
                             let value = Math.floor(Math.random() * maxValue * 0.4) + maxValue * 0.8;
                             chart.arrows[0].setValue(value);
-                            chart.axes[0].setTopText(Math.round(value) + " kW/h");
+                            chart.axes[0].setTopText(Math.round(value).toLocaleString('en-us') + " kW/h");
                         }
-
-
-
                     }
                 ]
             )

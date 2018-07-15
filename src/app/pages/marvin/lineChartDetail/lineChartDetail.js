@@ -6,13 +6,6 @@
                 ['$scope', 'baConfig', 'fetchDataFactory', 'layoutPaths', 'commonFunctions',
                     async function LineChartDetailCtrl($scope, baConfig, fdf, layoutPaths, commonFunctions) {
 
-                        let plant = "";
-                        if ($scope.selectedPlantTwo === undefined){
-                            plant = "1d8a69a5-b692-47b7-aacb-b7f26692c0ec";
-                        } else {
-                            plant = $scope.selectedPlantTwo;
-                        }
-
                         // List of relevant Properties
                         $scope.properties = {
                             EFFICIENCY:         "efficiency",
@@ -21,12 +14,18 @@
                             GEOTHERMAL_POWER:   "geothermal_power",
                         };
 
+                        // Default plant
+                        let plant = "1d8a69a5-b692-47b7-aacb-b7f26692c0ec";
+                        if ($scope.selectedPlant !== undefined) {
+                            plant = $scope.selectedPlant;
+                        }
+
                         // Default value for the drop-down menu
                         $scope.selectedProperty = Property.EFFICIENCY;
 
                         let data = await fdf.getProperties(plant, Property.TIME_STEP, $scope.selectedProperty, 24);
-                        $scope.dateFrom = getDateObjectFromString(data[0][Property.TIME_STEP]);
-                        $scope.dateTo = getDateObjectFromString(data[data.length -1][Property.TIME_STEP]) -1;
+                        $scope.dateFrom = Date.parse(data[0][Property.TIME_STEP]);
+                        $scope.dateTo = Date.parse(data[data.length - 1][Property.TIME_STEP]);
 
                         let line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
                         line.addListener('rendered', zoomChart);
@@ -35,24 +34,21 @@
 
                         // Broadcast listener, called when the selected plant is changed
                         $scope.$on('plant_changed', async function() {
-                            if ($scope.selectedPlantTwo === undefined){
+                            if ($scope.selectedPlant === undefined){
                                 plant = "1d8a69a5-b692-47b7-aacb-b7f26692c0ec";
                             } else {
-                                plant = $scope.selectedPlantTwo;
+                                plant = $scope.selectedPlant;
                             }
+
+                            // Recalculate data and redraw chart
                             data = await fdf.getProperties(plant, Property.TIME_STEP, $scope.selectedProperty, 24);
-                            $scope.dateFrom = getDateObjectFromString(data[0][Property.TIME_STEP]);
-                            $scope.dateTo = getDateObjectFromString(data[data.length -1][Property.TIME_STEP]) -1;
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
                         });
 
                         // Called when the selected property is changed
                         $scope.updateChart = async function (element) {
-                            if ($scope.selectedPlantTwo === undefined){
-                                plant = "1d8a69a5-b692-47b7-aacb-b7f26692c0ec";
-                            } else {
-                                plant = $scope.selectedPlantTwo;
-                            }
+
+                            // Recalculate data and redraw chart
                             $scope.selectedProperty = element.p;
                             data = await fdf.getProperties(plant, Property.TIME_STEP, $scope.selectedProperty, 24);
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);
@@ -97,7 +93,6 @@
                                     "balloonFunction": function (item) {
                                         return getBalloonText(item);
                                     },
-                                    //"balloonText": "<span style='font-size:18px;'>[[Math.round(value)]]</span>"
                                 }],
                                 "chartScrollbar": {
                                     "graph": "g1",
@@ -142,24 +137,31 @@
                             });
                         }
 
+                        // Get the balloon text depending on the selected property
                         function getBalloonText(item) {
                             let unit = "";
+                            let value = item.values.value;
 
                             switch ($scope.selectedProperty) {
                                 case Property.EFFICIENCY:
                                     unit = "%";
+                                    value = parseFloat((value * 100).toFixed(2));
                                     break;
                                 case Property.ELECTRICAL_POWER:
                                     unit = "kW/h";
+                                    value = Math.round(value).toLocaleString('en-us');
                                     break;
                                 case Property.GEOTHERMAL_POWER:
                                     unit = "kW/h";
+                                    value = Math.round(value).toLocaleString('en-us');
                                     break;
                                 case Property.EXTRACTION_RATE:
-                                    unit = "l/min";
+                                    unit = "m³/h";
+                                    value = Math.round(value).toLocaleString('en-us');
                                     break;
                             }
-                            return `<b>${Math.round(item.values.value)} ${unit}</b>`;
+
+                            return `<b>${value} ${unit}</b>`;
                         }
 
                         function zoomChart() {
@@ -169,8 +171,6 @@
                                 line.zoom($scope.dateTo, $scope.dateFrom);
                             }
                         }
-
-                        $scope.format = 'yyyy-MM-dd';
 
                         $scope.openFrom = openFrom;
                         $scope.openedFrom = false;
@@ -185,6 +185,13 @@
                             $scope.openedFrom = true;
                         }
 
+                        // Zoom to the newly selected date on change
+                        $scope.fromChanged = function fromChanged() {
+                            if ($scope.dateTo  !== ""){
+                                line.zoom($scope.dateFrom, $scope.dateTo);
+                            }
+                        };
+
                         $scope.openTo = openTo;
                         $scope.openedTo = false;
                         $scope.optionsTo = {
@@ -198,34 +205,12 @@
                             $scope.openedTo = true;
                         }
 
-                        $scope.toChanged = function toChanged(){
+                        // Zoom to the newly selected date on change
+                        $scope.toChanged = function toChanged() {
                             if ($scope.dateFrom !== ""){
                                 line.zoom($scope.dateFrom, $scope.dateTo);
                             }
                         };
-
-                        $scope.fromChanged = function fromChanged() {
-                            if ($scope.dateTo  !== ""){
-                                line.zoom($scope.dateFrom, $scope.dateTo);
-                            }
-                        };
-
-                        /**
-                         * YYYY-MM-DD
-                         */
-                        function getDateObjectFromString(dateString){
-                            let returnObject = {
-                                day: "",
-                                month: "",
-                                year: ""
-                            };
-
-                            returnObject.year = dateString.substring(0, dateString.indexOf("-"));
-                            returnObject.month = dateString.substring(dateString.indexOf("-"), dateString.split('-', 2).join("-").length);
-                            returnObject.day= dateString.substring(dateString.split('-', 2).join("-").length, dateString.length-1);
-
-                            return new Date(returnObject.year, returnObject.month-1, returnObject.day);
-                        }
 
                     }
                 ]
