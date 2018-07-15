@@ -118,7 +118,6 @@
                         });
 
                         $scope.$on('lineChartOneZoomedIteration', function (event, args) {
-                            console.log('hallo');
                             lineChart.zoom(args.startDate, args.endDate);
                         });
 

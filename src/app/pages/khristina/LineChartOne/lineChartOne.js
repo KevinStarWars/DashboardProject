@@ -22,7 +22,9 @@
                             addZoomListener(line);
                         });
 
-
+                        /**
+                         * broadcasr receiver when the
+                         */
                         $scope.$on('propertyChanged', async function () {
                             data = await fetchDataFactory.getProperties($scope.selectedPlantOne, Property.TIME_STEP, $scope.selectedProperty, downSampleRate);
                             line = makeLineChart(Property.TIME_STEP, $scope.selectedProperty, data);

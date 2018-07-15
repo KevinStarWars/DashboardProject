@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('Geothermal.pages.khristina', ['Geothermal.pages.kevin', 'Geothermal.pages.dashboard'])
+    angular.module('Geothermal.pages.khristina', ['Geothermal.pages.dashboard'])
         .config(routeConfig);
 
     /** @ngInject */

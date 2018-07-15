@@ -6,8 +6,7 @@
   'use strict';
 
   angular.module('Geothermal.pages.dashboard',
-      ['Geothermal.pages.kevin',
-      'Geothermal.pages.dashboard', 'ui.toggle']
+      ['Geothermal.pages.dashboard', 'ui.toggle']
   )
       .config(routeConfig);
 

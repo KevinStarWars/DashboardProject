@@ -20,7 +20,7 @@ let TWELVE_HOURS = 12 * 60 * 60 * 1000;
 (function () {
     'use strict';
 
-    angular.module('Geothermal.pages.kevin')
+    angular.module('Geothermal.pages')
         .factory('fetchDataFactory', ['commonFunctions', function(commonFunctions) {
 
             return {
