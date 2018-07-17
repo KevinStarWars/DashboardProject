@@ -74,7 +74,7 @@
             }
 
             function handleClick(event){
-                let locationString = 'http://localhost:3000/#/' + event['item']['category'];
+                let locationString = 'http://localhost:3000/#/detailView' + event['item']['category'];
                 window.open(locationString, "_top");
             }
 
